@@ -1,0 +1,14 @@
+.signup_ChildDiv{
+  position: relative;
+  align-items: center;
+}
+.signupFormDiv{
+  position: relative;
+  background-color: aqua;
+  padding: 5rem;
+  margin: 5rem 7rem 0 7rem;
+  align-self: center;
+}
+.formHeading{
+  text-align: center;
+}
