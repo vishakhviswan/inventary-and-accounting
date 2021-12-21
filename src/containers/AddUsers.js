@@ -1,29 +1,61 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import React, { useState, useContext } from "react";
-import { Form, Container, Button } from "react-bootstrap";
-import { FirebaseContext } from "../store/FirebaseContext";
 
-import { getAuth } from "firebase/auth";
+import React, { useState, useContext } from "react";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getAuth,
+} from "firebase/auth";
+import { Form, Container, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+// fire base related#######################################################
+import { FirebaseContext } from "../store/Context";
+import { collection, addDoc } from "firebase/firestore";
+
 function AddUsers() {
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [designation, setDesignation] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [mobile, setMobile] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const auth = getAuth();
-  const { firebase } = useContext(FirebaseContext);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [uid, setUid] = useState("")
 
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        result.user.updateProfile({ displayName: userName });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+  // fire base related#######################################################
+  const auth = getAuth();
+  const { db } = useContext(FirebaseContext);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password === confPassword) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          setUid(result.user.uid)
+          updateProfile(auth.currentUser, { displayName: userName });
+        })
+        .then(() => {
+          addDoc(collection(db, "users"), {
+            id: uid,
+            username: userName,
+            designation: designation,
+            company: company,
+            email: email,
+            mobile: mobile,
+          });
+        })
+
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(errorCode, "Message:", errorMessage);
+          console.log(errorMessage, errorCode);
+        })
+        .then(() => {
+          navigate("/userslist");
+        });
+    } else {
+      alert("Password and Confirm Password not Same");
+    }
   };
 
   return (
@@ -56,6 +88,7 @@ function AddUsers() {
                   onChange={(e) => setDesignation(e.target.value)}
                   size="sm"
                 >
+                  <option>Select One</option>
                   <option>Factory Manager</option>
                   <option>Factory Clerk</option>
                 </Form.Select>
@@ -67,11 +100,21 @@ function AddUsers() {
                   onChange={(e) => setCompany(e.target.value)}
                   size="sm"
                 >
+                  <option>Select One</option>
                   <option>Diwancheruvu</option>
                   <option>Namavaram</option>
                   <option>Vadisaleru</option>
                   <option>Tuni</option>
                 </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Mobile #</Form.Label>
+                <Form.Control
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                  type="number"
+                  placeholder="Enter Mobile Number"
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email</Form.Label>
@@ -113,5 +156,4 @@ function AddUsers() {
     </div>
   );
 }
-
 export default AddUsers;

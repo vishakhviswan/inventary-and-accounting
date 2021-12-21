@@ -1,8 +1,8 @@
-.signup_ChildDiv{
+.login_ChildDiv{
   position: relative;
   align-items: center;
 }
-.signupFormDiv{
+.loginFormDiv{
   position: relative;
   background-color: aqua;
   padding: 5rem;

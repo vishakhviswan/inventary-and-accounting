@@ -1,0 +1,38 @@
+
+.invColOne{
+    
+    background-color: aliceblue;
+    outline: black;
+}
+.invColTwo{
+    background-color: aqua;
+}
+.invColThree{
+    background-color: blueviolet;
+}
+.invCol{
+    border-radius: 15px;
+    border: solid 1px black;
+    height: 76vh;
+}
+/* .colHeading{
+    text-align: center;
+    align-self: center;
+} */
+
+hr{
+    color: white
+}
+.menuListContainer{
+    padding-top: 3rem;
+}
+h6{
+    font-size: small;
+    cursor: pointer;
+}
+.inputRow{
+    margin-top: 10px;
+}
+.row{
+    --bs-gutter-x: 5px;
+}

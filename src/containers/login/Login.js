@@ -1,17 +1,35 @@
-import React from "react";
-import "./Signup.css";
+import React, { useState } from "react";
+import "./Login.css";
 import { Form, Button, Container } from "react-bootstrap";
-function Signup() {
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import {useNavigate} from 'react-router-dom'
+
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate()
+  const auth = getAuth();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        navigate('/dashboard')
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
   return (
-    <div className="signup_ParentDiv">
-      <div className="signup_ChildDiv">
+    <div className="login_ParentDiv">
+      <div className="login_ChildDiv">
         <Container>
-          <div className="signupFormDiv">
+          <div className="loginFormDiv">
             <div className="formHeading">
-              <h3>Signin</h3>
+              <h3>Login</h3>
             </div>
 
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Select One</Form.Label>
                 <Form.Select size="sm">
@@ -33,7 +51,12 @@ function Signup() {
 
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  placeholder="Enter email"
+                />
                 {/* <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
                 </Form.Text> */}
@@ -41,7 +64,12 @@ function Signup() {
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  placeholder="Password"
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Check type="checkbox" label="Check me out" />
@@ -57,4 +85,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

@@ -1,17 +1,17 @@
 import React from 'react'
 import NavbarHeader from '../Components/Navbar'
-import AddUsers from '../containers/AddUsers';
-import Signup from '../containers/Signup';
+import Login from '../containers/login/Login';
 
-function SignIn() {
+
+function LoginPage() {
     return (
       <div className="signIn_ParentDiv">
         <NavbarHeader />
         <div className="signIn_childDiv">
-          <AddUsers/>
+          <Login/>
         </div>
       </div>
     );
 }
 
-export default SignIn
+export default LoginPage;
