@@ -30,10 +30,11 @@ function AddUsers() {
     if (password === confPassword) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((result) => {
-          setUid(result.user.uid)
+          
           updateProfile(auth.currentUser, { displayName: userName });
+          setUid(result.user.uid);
         })
-        .then(() => {
+        .then((result) => {
           addDoc(collection(db, "users"), {
             id: uid,
             username: userName,

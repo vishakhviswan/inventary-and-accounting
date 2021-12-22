@@ -4,7 +4,7 @@ import BreadcrumbSec from "../Components/Breadcrumb";
 import NavbarHeader from "../Components/Navbar";
 //import Inventory from "../containers/inventory/Inventory";
  import InventorySideMenu from "../containers/inventory/InventorySideMenu";
-import InventoryTopBar from "../containers/inventory/InventoryTopBar";
+
 
 
 function InventoryPage() {
@@ -13,7 +13,6 @@ function InventoryPage() {
     <div>
       <NavbarHeader />
       <BreadcrumbSec />
-      <InventoryTopBar />
       <InventorySideMenu/>
       {/* <Container>
         <Row>

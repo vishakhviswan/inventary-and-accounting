@@ -7,9 +7,12 @@ import SignIn from "./Pages/LoginPage";
 import DashBoard from "./Pages/DashBoard";
 import ListOfUsersPage from "./Pages/ListOfUsersPage";
 import AddUsersPage from "./Pages/AddUsersPage";
-import { AuthContext} from "./store/Context";
+import { AuthContext } from "./store/Context";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import InventoryPage from "./Pages/InventoryPage";
+import ArrivedMaterialsPage from "./Pages/inventory/ArrivedMaterialsPage";
+import StockRegisterPage from "./Pages/inventory/StockRegisterPage";
+
 
 function App() {
   const auth = getAuth();
@@ -30,7 +33,9 @@ function App() {
           <Route path="/cutting" element={<Cutting />} />
           <Route path="/addusers" element={<AddUsersPage />} />
           <Route path="/userslist" element={<ListOfUsersPage />} />
-          <Route path="/inventory" element={<InventoryPage/>} />
+          <Route path="/inventory" element={<InventoryPage />} />
+          <Route path="/arrivedmaterials" element={<ArrivedMaterialsPage />} />
+          <Route path="/stockreg" element={<StockRegisterPage/> } />
         </Routes>
       </BrowserRouter>
     </div>
