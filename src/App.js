@@ -12,9 +12,10 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import InventoryPage from "./Pages/InventoryPage";
 import ArrivedMaterialsPage from "./Pages/inventory/ArrivedMaterialsPage";
 import StockRegisterPage from "./Pages/inventory/StockRegisterPage";
-
+import {useNavigate} from 'react-router-dom'
 
 function App() {
+  //const navigate = useNavigate();
   const auth = getAuth();
   const {setUser } = useContext(AuthContext);
   // const { fb } = useContext(FirebaseContext);
@@ -28,8 +29,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<SignIn />} />
-          <Route exact path="/dashboard" element={<DashBoard />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route exact path="/" element={<DashBoard />} /> :
           <Route path="/cutting" element={<Cutting />} />
           <Route path="/addusers" element={<AddUsersPage />} />
           <Route path="/userslist" element={<ListOfUsersPage />} />

@@ -3,7 +3,7 @@ import { Col, Form, Row } from 'react-bootstrap';
 import {TopBarContext} from '../../store/ArrivalsContext'
 
 function ArrivalsTopBar() {
-  const { recived, setRecived, date, setDate, lot, setLot, validated } =
+  const { recived, setRecived,recivedFrom,setRecivedFrom, date, setDate, lot, setLot, validated } =
     useContext(TopBarContext);
 
   
@@ -31,9 +31,24 @@ function ArrivalsTopBar() {
                         <option>Graded Kernels</option>
                         <option>Finished Kernels</option>
                       </Form.Select>
-                      <Form.Control.Feedback>Please Confirm this field is not empty</Form.Control.Feedback>
+                      <Form.Control.Feedback>
+                        Please Confirm this field is not empty
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </div>
+                </Col>
+
+                <Col>
+                  <Form.Group className="mb-3" controlId="formBasicLot">
+                    <Form.Label>Recived From</Form.Label>
+                    <Form.Control
+                      required
+                      value={lot}
+                      onChange={(e) => setLot(e.target.value)}
+                      type="text"
+                      placeholder='factory name..'
+                    />
+                  </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group className="mb-3" controlId="formBasicLot">

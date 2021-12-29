@@ -1,48 +1,52 @@
 import React, { useState, useContext } from "react";
-import { Container, Form, Row, Col, Button, InputGroup, Modal } from "react-bootstrap";
-import {TopBarContext} from '../store/ArrivalsContext'
+import {
+  Container,
+  Form,
+  Row,
+  Col,
+  Button,
+  InputGroup,
+  Modal,
+} from "react-bootstrap";
+import { TopBarContext } from "../store/ArrivalsContext";
 
 import { FirebaseContext } from "../store/Context";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 
 import "./RcnArrival.css";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../store/Context";
+import { useEffect } from "react";
 function RcnArrival() {
-  const navigate = useNavigate()
-const { recived,date,lot,validated,setValidated } = useContext(TopBarContext);
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { recived, date, lot, validated, setValidated } =
+    useContext(TopBarContext);
 
-  const [impOrLoc, setImpOrLoc] = useState("")
-  const [mark, setMark] = useState("")
-  const [arrived, setArrived] = useState("")
-  const [invoice, setInvoice] = useState("")
-  const [outurn, setOuturn] = useState("")
-  const [vehicle, setVehicle] = useState("")
-  const [bags, setBags] = useState("")
-  const [weight, setWeight] = useState("")
-  const [remarks, setRemarks] = useState("")
+  const [impOrLoc, setImpOrLoc] = useState("");
+  const [mark, setMark] = useState("");
+  const [arrived, setArrived] = useState("");
+  const [invoice, setInvoice] = useState("");
+  const [outurn, setOuturn] = useState("");
+  const [vehicle, setVehicle] = useState("");
+  const [bags, setBags] = useState("");
+  const [weight, setWeight] = useState("");
+  const [remarks, setRemarks] = useState("");
 
   const { db } = useContext(FirebaseContext);
   const [show, setShow] = useState(false);
 
-//  const handleSubmit = (event) => {
-//    const form = event.currentTarget;
-//    if (form.checkValidity() === false) {
-//      event.preventDefault();
-//      event.stopPropagation();
-//    }
-
-//    setValidated(true);
-//  };
-
+  const [userDetails, setUserDetails] = useState("");
+  
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
     }
-    setValidated(true)
+    setValidated(true);
     if (form.checkValidity() === true) {
       addDoc(collection(db, "RcnArrivels"), {
         date: date,
@@ -58,35 +62,34 @@ const { recived,date,lot,validated,setValidated } = useContext(TopBarContext);
         weight: weight,
         remarks: remarks,
       })
-      
         .then(() => {
           addDoc(collection(db, "RcnStock"), {
             itemName: recived,
             Quantity: bags,
             weight: weight,
           });
-        }).then(() => {
+        })
+        .then(() => {
           alert("submitted sucsessfull");
           navigate("/stockreg");
-        })
-      
+        });
     } else {
-      alert('please check curreption')
+      alert("please check curreption");
     }
-    
-  }
-const [dweight, setDweight] = useState()
-  
-  const onChange = (value) => {
-    const defwight = (value*80);
-    setDweight(defwight);
-  }
-  
-  
+  };
+  const [dweight, setDweight] = useState();
 
+  const onChange = (value) => {
+    const defwight = value * 80;
+    setDweight(defwight);
+  };
+  console.log("user", user);
+
+  console.log("userDetails", userDetails);
   return (
     <div className="rcnArrival_ParentDiv">
       <div className="rcnArrival_ChildDiv">
+        <h5>{user ? `Hello, ${user.uid}` : "Login"}</h5>
         <Container className="rcnFormContainer">
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Row>
@@ -239,8 +242,7 @@ const [dweight, setDweight] = useState()
                     onChange={(e) => {
                       setWeight(e.target.value);
                     }}
-              
-                     placeholder={dweight}
+                    placeholder={dweight}
                     type="accounting"
                     aria-describedby="basic-addon1"
                   />
@@ -292,13 +294,17 @@ const [dweight, setDweight] = useState()
           </Modal.Header>
           <Modal.Body>
             <p>
-              date: {date},<br /> lotNo: {lot},<br /> recivedGrade: {recived},
-              <br />
-              importOrLocal:
-              {impOrLoc},<br /> rcnMark: {mark},<br /> arrivedFrom: {arrived},
-              <br />
-              invoiceNo: {invoice},<br /> outurn: {outurn},<br /> vehicleNo:
-              {vehicle},<br /> bags: {bags},<br /> weight: {weight},<br />
+              date: {date},<br />
+              lotNo: {lot},<br />
+              recivedGrade: {recived},<br />
+              importOrLocal:{impOrLoc},<br />
+              rcnMark: {mark},<br />
+              arrivedFrom: {arrived},<br />
+              invoiceNo: {invoice},<br />
+              outurn: {outurn},<br />
+              vehicleNo:{vehicle},<br />
+              bags: {bags},<br />
+              weight: {weight},<br />
               remarks: {remarks},
             </p>
           </Modal.Body>

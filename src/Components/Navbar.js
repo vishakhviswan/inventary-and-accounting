@@ -26,7 +26,7 @@ function NavbarHeader() {
               onClick={() => {
                 if (user) {
                 } else {
-                  navigate("/");
+                  navigate("/signin");
                 }
               }}
             >

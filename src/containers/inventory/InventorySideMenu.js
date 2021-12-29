@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import "./Inventory.css";
 import { useNavigate } from "react-router-dom";
+import { SideBarContext } from "../../store/SideMenuContext";
 function InventorySideMenu() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  
 
   return (
     <div>

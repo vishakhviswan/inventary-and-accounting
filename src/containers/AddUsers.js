@@ -20,7 +20,7 @@ function AddUsers() {
   const [password, setPassword] = useState("");
   const [mobile, setMobile] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const [uid, setUid] = useState("")
+  const [id, setId] = useState()
 
   // fire base related#######################################################
   const auth = getAuth();
@@ -30,19 +30,18 @@ function AddUsers() {
     if (password === confPassword) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((result) => {
-          
-          updateProfile(auth.currentUser, { displayName: userName });
-          setUid(result.user.uid);
-        })
-        .then((result) => {
           addDoc(collection(db, "users"), {
-            id: uid,
+            id: result.user.uid,
             username: userName,
             designation: designation,
             company: company,
             email: email,
             mobile: mobile,
-          });
+          });      
+        })
+        .then((result) => {
+          updateProfile(auth.currentUser, { displayName: userName });
+          console.log("result", id);
         })
 
         .catch((error) => {
