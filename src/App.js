@@ -17,20 +17,21 @@ import {useNavigate} from 'react-router-dom'
 function App() {
   //const navigate = useNavigate();
   const auth = getAuth();
-  const {setUser } = useContext(AuthContext);
+  const {setUserDtls,userDtls } = useContext(AuthContext);
   // const { fb } = useContext(FirebaseContext);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      setUserDtls(user);
+      
     });
-  }, [auth,setUser]);
+  }, [auth,setUserDtls]);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/signin" element={<SignIn />} />
-          <Route exact path="/" element={<DashBoard />} /> :
+          <Route exact path="/" element={<DashBoard />} />
           <Route path="/cutting" element={<Cutting />} />
           <Route path="/addusers" element={<AddUsersPage />} />
           <Route path="/userslist" element={<ListOfUsersPage />} />

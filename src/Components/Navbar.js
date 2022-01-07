@@ -6,33 +6,43 @@ import { AuthContext } from "../store/Context";
 
 function NavbarHeader() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { userDtls } = useContext(AuthContext);
   const auth = getAuth();
   return (
     <div>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">Prakash Exports</Navbar.Brand>
+          <Navbar.Brand href="#home">
+            {userDtls ? ` Prakash Exports, ${userDtls.displayName}` : ""}
+          </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link onClick={() => {
-              alert("Coming Soon (Work on Progress)");
-            } }>Accounting</Nav.Link>
-            <Nav.Link onClick={() => {
-              navigate('/inventory')
-            }}>Inventory</Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                alert("Coming Soon (Work on Progress)");
+              }}
+            >
+              Accounting
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/inventory");
+              }}
+            >
+              Inventory
+            </Nav.Link>
             <Nav.Link href="/">Pricing</Nav.Link>
             <Nav.Link
               value="Login"
               onClick={() => {
-                if (user) {
+                if (userDtls) {
                 } else {
                   navigate("/signin");
                 }
               }}
             >
-              {user ? `Hello, ${user.displayName}` : "Login"}
+              {userDtls ? `Hello, ${userDtls.displayName}` : "Login"}
             </Nav.Link>
-            {user && (
+            {userDtls && (
               <Nav.Link
                 href="#pricing"
                 onClick={() => {
@@ -43,7 +53,7 @@ function NavbarHeader() {
               >
                 Logout
               </Nav.Link>
-            )}
+          )}
           </Nav>
         </Container>
       </Navbar>

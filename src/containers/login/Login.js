@@ -14,7 +14,7 @@ function Login() {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        navigate('/dashboard')
+        navigate('/')
       })
       .catch((error) => {
         alert(error.message);

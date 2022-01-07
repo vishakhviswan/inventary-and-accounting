@@ -1,5 +1,5 @@
 import React, { useContext} from 'react'
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
 import {TopBarContext} from '../../store/ArrivalsContext'
 
 function ArrivalsTopBar() {
@@ -11,6 +11,8 @@ function ArrivalsTopBar() {
       <div>
         <div className="topBar_childDiv">
           <div className="topBar_Content">
+            <Container>
+
             <Form noValidate validated={validated}>
               <Row>
                 <Col>
@@ -43,8 +45,8 @@ function ArrivalsTopBar() {
                     <Form.Label>Recived From</Form.Label>
                     <Form.Control
                       required
-                      value={lot}
-                      onChange={(e) => setLot(e.target.value)}
+                      value={recivedFrom}
+                      onChange={(e) => setRecivedFrom(e.target.value)}
                       type="text"
                       placeholder='factory name..'
                     />
@@ -82,10 +84,11 @@ function ArrivalsTopBar() {
                   type="text"
                   defaultValue={date}
                 />
-              </InputGroup> */}
+               </InputGroup> */}
                 </Col>
               </Row>
             </Form>
+            </Container>
           </div>
         </div>
       </div>

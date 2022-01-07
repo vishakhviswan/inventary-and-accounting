@@ -7,18 +7,19 @@ import {
   Button,
   InputGroup,
   Modal,
+  Table,
 } from "react-bootstrap";
 import { TopBarContext } from "../store/ArrivalsContext";
 
 import { FirebaseContext } from "../store/Context";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 
 import "./RcnArrival.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/Context";
 import { useEffect } from "react";
 function RcnArrival() {
-  const { user } = useContext(AuthContext);
+  const { userDtls } = useContext(AuthContext);
   const navigate = useNavigate();
   const { recived, date, lot, validated, setValidated } =
     useContext(TopBarContext);
@@ -32,12 +33,24 @@ function RcnArrival() {
   const [bags, setBags] = useState("");
   const [weight, setWeight] = useState("");
   const [remarks, setRemarks] = useState("");
-
+const [user, setUser] = useState()
   const { db } = useContext(FirebaseContext);
   const [show, setShow] = useState(false);
 
   const [userDetails, setUserDetails] = useState("");
-  
+
+// const citiesRef = collection(db, "cities");
+
+// await setDoc(doc(citiesRef, "SF"), {
+//   name: "San Francisco",
+//   state: "CA",
+//   country: "USA",
+//   capital: false,
+//   population: 860000,
+//   regions: ["west_coast", "norcal"],
+// });
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,6 +62,7 @@ function RcnArrival() {
     setValidated(true);
     if (form.checkValidity() === true) {
       addDoc(collection(db, "RcnArrivels"), {
+        createdBy: userDetails,
         date: date,
         lotNo: lot,
         recivedGrade: recived,
@@ -64,6 +78,7 @@ function RcnArrival() {
       })
         .then(() => {
           addDoc(collection(db, "RcnStock"), {
+            createdBy: userDetails,
             itemName: recived,
             Quantity: bags,
             weight: weight,
@@ -83,13 +98,31 @@ function RcnArrival() {
     const defwight = value * 80;
     setDweight(defwight);
   };
-  console.log("user", user);
 
-  console.log("userDetails", userDetails);
+  useEffect(() => {
+    setUserDetails(userDtls.uid);
+  }, [userDtls]);
+
+  // ***************fIREBASE USER dETAILS*******************************
+  useEffect(() => {
+    const getUser = async () => {
+      const userData = await getDocs(
+        collection(db, "users"),
+      );
+      setUser(
+        userData.docs.map((doc) => ({
+          ...doc.data(),
+        }))
+      );
+
+    };
+    getUser();
+  }, [db]);
+  console.log("hello", user);
+
   return (
     <div className="rcnArrival_ParentDiv">
       <div className="rcnArrival_ChildDiv">
-        <h5>{user ? `Hello, ${user.uid}` : "Login"}</h5>
         <Container className="rcnFormContainer">
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Row>
@@ -293,20 +326,58 @@ function RcnArrival() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>
-              date: {date},<br />
-              lotNo: {lot},<br />
-              recivedGrade: {recived},<br />
-              importOrLocal:{impOrLoc},<br />
-              rcnMark: {mark},<br />
-              arrivedFrom: {arrived},<br />
-              invoiceNo: {invoice},<br />
-              outurn: {outurn},<br />
-              vehicleNo:{vehicle},<br />
-              bags: {bags},<br />
-              weight: {weight},<br />
-              remarks: {remarks},
-            </p>
+            <Table striped bordered hover>
+              <tbody>
+                <tr>
+                  <th>Date</th>
+                  <td>{date ?  date  : "!!!Enter This Field"}</td>
+                </tr>
+                <tr>
+                  <th>Lot No.</th>
+                  <td>{lot ?  lot  : "!!!Enter This Field"}</td>
+                </tr>
+                <tr>
+                  <th>Grade</th>
+                  <td>{recived}</td>
+                </tr>
+                <tr>
+                  <th>Origin</th>
+                  <td>{impOrLoc}</td>
+                </tr>
+                <tr>
+                  <th>Country</th>
+                  <td>{mark}</td>
+                </tr>
+                <tr>
+                  <th>Arrived From</th>
+                  <td>{arrived}</td>
+                </tr>
+                <tr>
+                  <th>Invoice No.</th>
+                  <td>{invoice}</td>
+                </tr>
+                <tr>
+                  <th>Outurn</th>
+                  <td>{outurn}</td>
+                </tr>
+                <tr>
+                  <th>Vehicle No.</th>
+                  <td>{vehicle}</td>
+                </tr>
+                <tr>
+                  <th>No. of Bags</th>
+                  <td>{bags}</td>
+                </tr>
+                <tr>
+                  <th>Net Weight</th>
+                  <td>{weight?weight:"!!!Enter this Field"}</td>
+                </tr>
+                <tr>
+                  <th>Remarks.</th>
+                  <td>{remarks}</td>
+                </tr>
+              </tbody>
+            </Table>
           </Modal.Body>
         </Modal>
       </div>

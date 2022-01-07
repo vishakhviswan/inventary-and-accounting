@@ -6,6 +6,7 @@ import RcnArrival from "../../Components/RcnArrival";
 import { SideBarContext } from "../../store/SideMenuContext";
 import { TopBarContext } from "../../store/ArrivalsContext";
 import "./ArrivedMaterials.css";
+import GkArrivals from "../../Components/GkArrivals";
 
 function ArrivedMaterials() {
   const { recived } = useContext(TopBarContext);
@@ -58,11 +59,12 @@ function ArrivedMaterials() {
   return (
     <div className="arrived_ParentDiv">
       <div className="arrived_ChildDiv">
-        <PkArrivals />
+        {/* <GkArrivals /> */}
         {recived == "Row Cashew Nuts" ? <RcnArrival /> : ""}
         {recived == "Cutting Kernels" ? <CkArrival /> : ""}
         {recived == "Peeling Machine" ? <MpArrival /> : ""}
         {recived == "Peeled Kernels" ? <PkArrivals /> : ""}
+        {recived == "Graded Kernels" ? <GkArrivals /> : ""}
       </div>
     </div>
   );
