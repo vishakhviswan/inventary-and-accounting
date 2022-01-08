@@ -27,8 +27,12 @@ function InventorySideMenu() {
                 <h6>Despatch Materials</h6>
               </Row>
 
-              <Row>
-                <h6>Cutting</h6>
+              <Row
+                onClick={() => {
+                  navigate("/cutting");
+                }}
+              >
+                <h6>Processing</h6>
               </Row>
               <Row>
                 <h6>Peeling</h6>

@@ -12,7 +12,16 @@ import {
 import { TopBarContext } from "../store/ArrivalsContext";
 
 import { FirebaseContext } from "../store/Context";
-import { collection, addDoc, query, where, getDocs, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 
 import "./RcnArrival.css";
 import { useNavigate } from "react-router-dom";
@@ -21,9 +30,7 @@ import { useEffect } from "react";
 function RcnArrival() {
   const { userDtls } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { recived, date, lot, validated, setValidated } =
-    useContext(TopBarContext);
-
+  const { recived, date, lot, validated, setValidated } = useContext(TopBarContext);
   const [impOrLoc, setImpOrLoc] = useState("");
   const [mark, setMark] = useState("");
   const [arrived, setArrived] = useState("");
@@ -33,24 +40,12 @@ function RcnArrival() {
   const [bags, setBags] = useState("");
   const [weight, setWeight] = useState("");
   const [remarks, setRemarks] = useState("");
-const [user, setUser] = useState()
+  const [user, setUser] = useState();
   const { db } = useContext(FirebaseContext);
   const [show, setShow] = useState(false);
-
   const [userDetails, setUserDetails] = useState("");
-
-// const citiesRef = collection(db, "cities");
-
-// await setDoc(doc(citiesRef, "SF"), {
-//   name: "San Francisco",
-//   state: "CA",
-//   country: "USA",
-//   capital: false,
-//   population: 860000,
-//   regions: ["west_coast", "norcal"],
-// });
-
-
+  const [currentUser, setCurrentUser] = useState("")
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,7 +56,8 @@ const [user, setUser] = useState()
     }
     setValidated(true);
     if (form.checkValidity() === true) {
-      addDoc(collection(db, "RcnArrivels"), {
+      const RcnArrivalRef = collection(db, "RcnArrivels");
+      setDoc(doc(RcnArrivalRef, currentUser.company), {
         createdBy: userDetails,
         date: date,
         lotNo: lot,
@@ -105,21 +101,24 @@ const [user, setUser] = useState()
 
   // ***************fIREBASE USER dETAILS*******************************
   useEffect(() => {
+    const idString = userDtls.uid.toString();
     const getUser = async () => {
-      const userData = await getDocs(
-        collection(db, "users"),
-      );
-      setUser(
-        userData.docs.map((doc) => ({
-          ...doc.data(),
-        }))
-      );
+      const docRef = doc(db, "users", idString);
+      const docSnap = await getDoc(docRef);
 
+      if (docSnap.exists()) {
+        setCurrentUser(docSnap.data())
+        console.log("Document data:", docSnap.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
     };
+    
     getUser();
   }, [db]);
   console.log("hello", user);
-
+console.log("heyyyy", currentUser.company);
   return (
     <div className="rcnArrival_ParentDiv">
       <div className="rcnArrival_ChildDiv">
@@ -330,11 +329,11 @@ const [user, setUser] = useState()
               <tbody>
                 <tr>
                   <th>Date</th>
-                  <td>{date ?  date  : "!!!Enter This Field"}</td>
+                  <td>{date ? date : "!!!Enter This Field"}</td>
                 </tr>
                 <tr>
                   <th>Lot No.</th>
-                  <td>{lot ?  lot  : "!!!Enter This Field"}</td>
+                  <td>{lot ? lot : "!!!Enter This Field"}</td>
                 </tr>
                 <tr>
                   <th>Grade</th>
@@ -370,7 +369,7 @@ const [user, setUser] = useState()
                 </tr>
                 <tr>
                   <th>Net Weight</th>
-                  <td>{weight?weight:"!!!Enter this Field"}</td>
+                  <td>{weight ? weight : "!!!Enter this Field"}</td>
                 </tr>
                 <tr>
                   <th>Remarks.</th>

@@ -3,7 +3,7 @@ import { Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 
 import "./Inventory.css";
 
-function Inventory() {
+function Processing() {
   const [number, setNumber] = useState(0);
 
   function handleEnter(event) {
@@ -252,4 +252,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default Processing;

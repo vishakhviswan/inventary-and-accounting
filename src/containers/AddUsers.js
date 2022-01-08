@@ -9,7 +9,7 @@ import { Form, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 // fire base related#######################################################
 import { FirebaseContext } from "../store/Context";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 
 function AddUsers() {
   const navigate = useNavigate();
@@ -30,14 +30,16 @@ function AddUsers() {
     if (password === confPassword) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((result) => {
-          addDoc(collection(db, "users"), {
-            id: result.user.uid,
+           const usersRef = collection(db, "users");
+          setDoc(doc(usersRef, result.user.uid), {
+             id: result.user.uid,
             username: userName,
             designation: designation,
             company: company,
             email: email,
             mobile: mobile,
-          });      
+           });
+
         })
         .then((result) => {
           updateProfile(auth.currentUser, { displayName: userName });

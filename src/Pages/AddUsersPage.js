@@ -11,4 +11,4 @@ function AddUsersPage() {
     )
 }
 
-export default AddUsersPage
+export default AddUsersPage;
