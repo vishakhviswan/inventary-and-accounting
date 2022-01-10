@@ -31,6 +31,32 @@ function Processing() {
       console.log(form);
     }
   }
+
+  function handleEnterOut(event) {
+    if (event.keyCode === 13) {
+      const form = event.target.form;
+      const index = Array.prototype.indexOf.call(form, event.target);
+      form.elements[index + 1].focus();
+      event.preventDefault();
+    } else if (event.keyCode === 37) {
+      const form = event.target.form;
+      const index = Array.prototype.indexOf.call(form, event.target);
+      form.elements[index - 1].focus();
+      event.preventDefault();
+    } else if (event.keyCode === 40) {
+      setNumber(number + 1);
+      event.preventDefault();
+    } else if (event.keyCode === 46) {
+      setNumber(number - 1);
+      event.preventDefault();
+    } else if (event.keyCode === 39) {
+      const form = event.target.form;
+      const index = Array.prototype.indexOf.call(form, event.target);
+      form.elements[index + 1].focus();
+      event.preventDefault();
+      console.log(form);
+    }
+  }
   
   return (
     <div className="inv_ParentDiv">
@@ -137,7 +163,7 @@ function Processing() {
                   <Row>
                     <Col>
                       <Form.Control
-                        onKeyDown={handleEnter}
+                        onKeyDown={handleEnterOut}
                         md={3}
                         lg={3}
                         sm={3}
@@ -148,7 +174,7 @@ function Processing() {
                       <InputGroup>
                         <InputGroup.Text id="basic-addon1">Lot</InputGroup.Text>
                         <Form.Control
-                          onKeyDown={handleEnter}
+                          onKeyDown={handleEnterOut}
                           md={1}
                           type="text"
                           aria-describedby="basic-addon1"
@@ -158,7 +184,7 @@ function Processing() {
                     <Col>
                       <InputGroup>
                         <Form.Control
-                          onKeyDown={handleEnter}
+                          onKeyDown={handleEnterOut}
                           md={1}
                           lg={1}
                           sm={1}
@@ -174,7 +200,7 @@ function Processing() {
                     <Row className="inputRow">
                       <Col>
                         <Form.Control
-                          onKeyDown={handleEnter}
+                          onKeyDown={handleEnterOut}
                           md={3}
                           lg={3}
                           sm={3}
@@ -187,7 +213,7 @@ function Processing() {
                             Lot
                           </InputGroup.Text>
                           <Form.Control
-                            onKeyDown={handleEnter}
+                            onKeyDown={handleEnterOut}
                             md={1}
                             type="text"
                             aria-describedby="basic-addon1"
@@ -197,7 +223,7 @@ function Processing() {
                       <Col>
                         <InputGroup>
                           <Form.Control
-                            onKeyDown={handleEnter}
+                            onKeyDown={handleEnterOut}
                             md={1}
                             lg={1}
                             sm={1}
