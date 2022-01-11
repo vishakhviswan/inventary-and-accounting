@@ -34,8 +34,12 @@ function InventorySideMenu() {
               >
                 <h6>Processing</h6>
               </Row>
-              <Row>
-                <h6>Peeling</h6>
+              <Row
+                onClick={() => {
+                  navigate("/stockcreate");
+                }}
+              >
+                <h6>Create Stock Item</h6>
               </Row>
               <Row>
                 <h6>Grading</h6>

@@ -2,7 +2,8 @@ import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import NavbarHeader from '../../Components/Navbar'
 import InventorySideMenu from '../../containers/inventory/InventorySideMenu';
-import Processing from '../../containers/inventory/Processing';
+import ProcessingInput from '../../containers/inventory/ProcessingInput';
+import ProcessingOutput from '../../containers/inventory/ProcessingOutput';
 
 function ProcessingPage() {
     return (
@@ -10,8 +11,11 @@ function ProcessingPage() {
         <NavbarHeader />
         <Container>
           <Row>
-            <Col md={10} lg={10} sm={10}>
-                        <Processing/>
+            <Col>
+              <ProcessingInput/>
+            </Col>
+            <Col>
+              <ProcessingOutput/>
             </Col>
             <Col md={2} lg={2} sm={2}>
               <InventorySideMenu />

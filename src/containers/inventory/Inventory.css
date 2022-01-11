@@ -1,39 +1,54 @@
-
-.invColOne{
-    
-    background-color: aliceblue;
-    outline: black;
+.invColOne {
+  background-color: aliceblue;
+  outline: black;
 }
-.invColTwo{
-    background-color: aqua;
+.invColTwo {
+  background-color: aqua;
 }
-.invColThree{
-    background-color: rgb(215, 197, 231);
-    height: 76vh;
+.invColThree {
+  background-color: rgb(215, 197, 231);
+  height: 76vh;
 }
-.invCol{
-    border-radius: 15px;
-    border: solid 1px black;
-    height: 76vh;
+.invCol {
+  border-radius: 15px;
+  border: solid 1px black;
+  height: 76vh;
 }
 /* .colHeading{
     text-align: center;
     align-self: center;
 } */
 
-hr{
-    color: white
+hr {
+  color: white;
 }
-.menuListContainer{
-    padding-top: 3rem;
+.menuListContainer {
+  padding-top: 3rem;
 }
-h6{
-    font-size: small;
-    cursor: pointer;
+h6 {
+  font-size: small;
+  cursor: pointer;
 }
-.inputRow{
-    margin-top: 10px;
+.inputRow {
+  margin-top: 10px;
 }
-.row{
-    --bs-gutter-x: 5px;
+.row {
+  --bs-gutter-x: 5px;
+}
+
+/* **********************Create Stock******************* */
+
+.createStock_Container {
+  padding: 2rem;
+}
+
+
+/* **********************Typeahead******************* */
+
+.dropdown-menu{
+ width: max-content !important;
+ inset: 0px 0px auto auto !important;
+}
+.dropdown-menu{
+    width: max-content !important;
 }

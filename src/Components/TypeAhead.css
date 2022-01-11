@@ -1,0 +1,6 @@
+
+.dropdown-menu{
+ position:absolute !important;
+ width: max-content !important;
+ inset: 0px 0px auto auto !important;
+}

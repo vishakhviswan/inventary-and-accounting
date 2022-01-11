@@ -8,11 +8,12 @@ import ListOfUsersPage from "./Pages/ListOfUsersPage";
 import AddUsersPage from "./Pages/AddUsersPage";
 import { AuthContext } from "./store/Context";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
-import InventoryPage from "./Pages/InventoryPage";
 import ArrivedMaterialsPage from "./Pages/inventory/ArrivedMaterialsPage";
 import StockRegisterPage from "./Pages/inventory/StockRegisterPage";
 import {useNavigate} from 'react-router-dom'
 import ProcessingPage from "./Pages/inventory/ProcessingPage";
+import CreateStockPage from "./Pages/inventory/CreateStockPage";
+import TypeAhead from "./Components/TypeAhead";
 
 function App() {
   //const navigate = useNavigate();
@@ -33,11 +34,12 @@ function App() {
           <Route exact path="/" element={<DashBoard />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="processing" element={<ProcessingPage />} />
+          <Route path="stockcreate" element={<CreateStockPage />} />
           <Route path="/addusers" element={<AddUsersPage />} />
           <Route path="/userslist" element={<ListOfUsersPage />} />
-          <Route path="/inventory" element={<InventoryPage />} />
           <Route path="/arrivedmaterials" element={<ArrivedMaterialsPage />} />
           <Route path="/stockreg" element={<StockRegisterPage />} />
+          <Route path="/test" element={<TypeAhead/>} />
         </Routes>
       </BrowserRouter>
     </div>
