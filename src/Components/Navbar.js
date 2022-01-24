@@ -25,7 +25,7 @@ function NavbarHeader() {
             </Nav.Link>
             <Nav.Link
               onClick={() => {
-                navigate("/inventory");
+                navigate("/processing");
               }}
             >
               Inventory

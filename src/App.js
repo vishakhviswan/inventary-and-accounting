@@ -33,8 +33,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<DashBoard />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="processing" element={<ProcessingPage />} />
-          <Route path="stockcreate" element={<CreateStockPage />} />
+          <Route path="/processing" element={<ProcessingPage />} />
+          <Route path="/stockcreate" element={<CreateStockPage />} />
           <Route path="/addusers" element={<AddUsersPage />} />
           <Route path="/userslist" element={<ListOfUsersPage />} />
           <Route path="/arrivedmaterials" element={<ArrivedMaterialsPage />} />
