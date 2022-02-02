@@ -14,7 +14,7 @@ function UsersList() {
           ...doc.data(),
         }))
       );
-      console.log(userData);
+      console.log("users", userData);
     };
     getUsers();
   }, [db]);
@@ -35,7 +35,7 @@ function UsersList() {
                 <th>Email</th>
                 <th>Edit</th>
                 <th>Delete</th>
-              </tr> 
+              </tr>
             </thead>
 
             {userDetails.map((obj, index) => (

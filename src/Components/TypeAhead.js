@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react';
-import { Form } from 'react-bootstrap';
 import { Typeahead } from "react-bootstrap-typeahead";
 import './TypeAhead.css'
 

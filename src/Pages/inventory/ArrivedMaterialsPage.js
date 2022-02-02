@@ -7,7 +7,6 @@ import ArrivedMaterials from '../../containers/inventory/ArrivedMaterials'
 import ArrivalsTopBar from '../../containers/inventory/ArrivalsTopBar';
 
 import {TopContext} from '../../store/ArrivalsContext'
-import InventoryTopBar from '../../containers/inventory/InventoryTopBar';
 function ArrivedMaterialsPage() {
     return (
       <div className="arrivedMaterials_ParentDiv">

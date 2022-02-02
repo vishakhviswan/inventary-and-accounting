@@ -8,25 +8,25 @@ function ProcessingOutput() {
   const [number, setNumber] = useState(0);
   const [pressed, setPressed] = useState(1);
   const [press, setPress] = useState(false);
-const options = [
-  "alahabad",
-  "bsada",
-  "Apple",
-  "Banana",
-  "Orange",
-  "Apple",
-  "Banana",
-  "Orange",
-];
+// const options = [
+//   "alahabad",
+//   "bsada",
+//   "Apple",
+//   "Banana",
+//   "Orange",
+//   "Apple",
+//   "Banana",
+//   "Orange",
+// ];
   function handleEnter(event) {
-    if (event.keyCode === 13 && press == false) {
+    if (event.keyCode === 13 && press === false) {
       const form = event.target.form;
       const index = Array.prototype.indexOf.call(form, event.target);
       form.elements[index + 1].focus();
       event.preventDefault();
       console.log("formmmm", index);
       setPressed(pressed + 1);
-      if (pressed == 2) {
+      if (pressed === 2) {
         setPress(true);
       }
     } else if (event.keyCode === 37) {

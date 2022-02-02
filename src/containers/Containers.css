@@ -1,0 +1,18 @@
+ /* ********New********** */
+/* ***********DashBoard ******************************* */
+.dashBoard_ChildDiv {
+  padding-top: 3rem;
+}
+.card-text {
+  font-size: 1.25rem;
+}
+.card-text-stock{
+    margin-bottom: -5px;
+    font-size: 1rem;
+}
+.cardDashBoard {
+  height: 14rem !important;
+  border-radius: 1rem !important;
+  border: 2px solid rgba(0,0,0,.125) !important;
+}
+/* *********** //DashBoard ******************************* */

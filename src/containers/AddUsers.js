@@ -9,7 +9,7 @@ import { Form, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 // fire base related#######################################################
 import { FirebaseContext } from "../store/Context";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { collection, setDoc, doc } from "firebase/firestore";
 
 function AddUsers() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function AddUsers() {
   const [password, setPassword] = useState("");
   const [mobile, setMobile] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const [id, setId] = useState()
+  const [id] = useState()
 
   // fire base related#######################################################
   const auth = getAuth();
