@@ -8,6 +8,10 @@ function InventoryModal() {
   const [title, setTitle] = useState("");
 
   const {
+    setLabelThree,
+    setCreateGroup,
+    setCreateCategory,
+    setCreateUnit,setCreateGodown,
     show,
     setShow,
     create,
@@ -20,6 +24,13 @@ function InventoryModal() {
     setBook,
     showCreate,
     setShowCreate,
+    setTitles,
+    labelOne,
+    setLabelOne,
+    labelTwo,
+    setLabelTwo,
+    placeHolder,
+    setPlaceHolder,
   } = useContext(SideBarContext);
   // const [show, setShow] = useState(false);
   const [modalOptions, setModalOptions] = useState("");
@@ -39,6 +50,32 @@ function InventoryModal() {
     if (e.target.id === "create") {
       if (e.target.title === "Stock Group") {
         setShowCreate(true);
+        setCreateGroup(true);
+        setTitles("Stock Group Creation");
+        setLabelOne("Group Name");
+        setLabelTwo("Under");
+        setPlaceHolder("Type Group Name");
+      } else if (e.target.title === "Stock Category") {
+        setShowCreate(true);
+        setCreateCategory(true);
+        setTitles("Stock Category Creation");
+        setLabelOne("Category Name");
+        setLabelTwo("Under");
+        setPlaceHolder("Type Category Name");
+      } else if (e.target.title == "Unit") {
+        setShowCreate(true);
+        setCreateUnit(true);
+        setTitles("Unit Creation");
+        setLabelOne("Symbol");
+        setLabelTwo("Formal Name");
+        setLabelThree("Unit Quantity Code (UQC)");
+        setPlaceHolder("Type Here....");
+      } else if (e.target.title === "Godown") {
+        setShowCreate(true);
+        setCreateGodown(true);
+        setTitles("Godown Creation");
+        setLabelOne("Godown Name");
+        setLabelTwo("Under");
       }
 
     } else {
@@ -88,10 +125,40 @@ function InventoryModal() {
             >
               Stock Group
             </Card.Text>
-            <Card.Text className="text-items">Stock Category</Card.Text>
+            <Card.Text
+              className="text-items"
+              id="create"
+              title="Stock Category"
+              onClick={(e) => {
+                handleCreate(e);
+                handleClose();
+              }}
+            >
+              Stock Category
+            </Card.Text>
             <Card.Text className="text-items">Stock Item</Card.Text>
-            <Card.Text className="text-items">Unit</Card.Text>
-            <Card.Text className="text-items">Godown</Card.Text>
+            <Card.Text
+              className="text-items"
+              id="create"
+              title="Unit"
+              onClick={(e) => {
+                handleCreate(e);
+                handleClose();
+              }}
+            >
+              Unit
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="create"
+              title="Godown"
+              onClick={(e) => {
+                handleCreate(e);
+                handleClose();
+              }}
+            >
+              Godown
+            </Card.Text>
           </Modal.Body>
         ) : (
           ""
