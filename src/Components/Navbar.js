@@ -14,7 +14,7 @@ import {
 function NavbarHeader() {
 
   const navigate = useNavigate();
-  const { userDtls } = useContext(AuthContext);
+  const { userDetails,userDtls } = useContext(AuthContext);
   const auth = getAuth();
 
   return (
@@ -24,7 +24,7 @@ function NavbarHeader() {
           <Container>
             <Navbar.Brand href="/">
               Prakash Exports
-              {userDtls ? `, ${userDtls.uid}` : ""}
+              {userDetails ? `, ${userDetails.company}` : ""}
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">

@@ -11,7 +11,10 @@ function InventoryModal() {
     setLabelThree,
     setCreateGroup,
     setCreateCategory,
-    setCreateUnit,setCreateGodown,
+    setCreateUnit,
+    setCreateGodown,
+    createItem,
+    setCreateItem,
     show,
     setShow,
     create,
@@ -76,10 +79,17 @@ function InventoryModal() {
         setTitles("Godown Creation");
         setLabelOne("Godown Name");
         setLabelTwo("Under");
+        setPlaceHolder("Type Here....");
+      } else if (e.target.title === "Stock Item") {
+        setShowCreate(true);
+        setCreateItem(true);
+        setTitles("Stock Item Creation");
+        setLabelOne("Item Name");
+        setLabelTwo("Under");
+        setLabelThree("Units")
+        setPlaceHolder("Type Here....");
       }
-
     } else {
-
       console.log(id);
     }
   };
@@ -136,7 +146,17 @@ function InventoryModal() {
             >
               Stock Category
             </Card.Text>
-            <Card.Text className="text-items">Stock Item</Card.Text>
+            <Card.Text
+              className="text-items"
+              id="create"
+              title="Stock Item"
+              onClick={(e) => {
+                handleCreate(e);
+                handleClose();
+              }}
+            >
+              Stock Item
+            </Card.Text>
             <Card.Text
               className="text-items"
               id="create"
