@@ -89,5 +89,22 @@
 .formText{
   cursor: pointer;
 }
-
+.alterModal .modal-content{
+  width: max-content;
+}
+.batchModal .modal-content{
+  width: 100%;
+}
+.batchModal .modal-dialog{
+  margin-left: 2rem;
+  margin-left: 2rem;
+  max-width: 100%;
+}
+.batchTitle{
+  align-items: center;
+}
+.batchHeading{
+  line-height: 0px;
+  align-self: center;
+}
 /* **************/ /*CreateModal***************** */

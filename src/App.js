@@ -28,17 +28,18 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       setUserDtls(user);
-      console.log("userApp", user.uid);
-      const userRef = doc(db, "users", user.uid);
+      if (user) {
+        console.log("userApp", user.uid);
+        const userRef = doc(db, "users", user.uid);
 
-      const docSnap = await getDoc(userRef);
-
-      if (docSnap.exists()) {
-        setUserDetails(docSnap.data())
-        console.log("Document data:", docSnap.data());
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists()) {
+          setUserDetails(docSnap.data())
+          console.log("Document data:", docSnap.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
       }
     });
   }, [auth,setUserDtls]);

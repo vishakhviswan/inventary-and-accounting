@@ -14,17 +14,38 @@ export const SideContext = ({ children }) => {
   const [createUnit, setCreateUnit] = useState(false);
   const [createItem, setCreateItem] = useState(false);
   const [createGodown, setCreateGodown] = useState(false);
+  const [isAlter, setIsAlter] = useState(false);
   const [titles, setTitles] = useState("");
   const [labelOne, setLabelOne] = useState("");
   const [labelTwo, setLabelTwo] = useState("");
   const [labelThree, setLabelThree] = useState("");
   const [placeHolder, setPlaceHolder] = useState("");
+  const [placeHolder2, setPlaceHolder2] = useState("");
+  const [underSelection, setUnderSelection] = useState("");
+  const [phUnit, setPhUnit] = useState("");
+  const [phQty, setPhQty] = useState('')
+  const [phRate, setPhRate] = useState("");
+  const [phValue, setPhValue] = useState("");
   return (
     <SideBarContext.Provider
       value={{
-        titles, setTitles,labelOne, setLabelOne,labelTwo, setLabelTwo,placeHolder, setPlaceHolder,
-        createGroup,createUnit, setCreateUnit,
-        setCreateGroup,labelThree, setLabelThree,
+        phUnit, setPhUnit,phQty, setPhQty,phRate, setPhRate,phValue, setPhValue,placeHolder2, setPlaceHolder2,
+        isAlter,
+        setIsAlter,
+        titles,
+        setTitles,
+        labelOne,
+        setLabelOne,
+        labelTwo,
+        setLabelTwo,
+        placeHolder,
+        setPlaceHolder,
+        createGroup,
+        createUnit,
+        setCreateUnit,
+        setCreateGroup,
+        labelThree,
+        setLabelThree,
         createCategory,
         setCreateCategory,
         createItem,
@@ -45,9 +66,42 @@ export const SideContext = ({ children }) => {
         setBook,
         showCreate,
         setShowCreate,
+        underSelection,
+        setUnderSelection,
       }}
     >
       {children}
     </SideBarContext.Provider>
+  );
+};
+
+export const StockAlterContext = createContext("");
+
+export const AlterContext = ({ children}) => {
+  const [showAlter, setShowAlter] = useState(false);
+  const [alterGroup, setAlterGroup] = useState(false);
+  const [alterCategory, setAlterCategory] = useState(false);
+  const [alterItem, setAlterItem] = useState(false);
+  const [alterUnit, setAlterUnit] = useState(false);
+  const [alterGodown, setAlterGodown] = useState(false);
+  return (
+    <StockAlterContext.Provider
+      value={{
+        showAlter,
+        setShowAlter,
+        alterGroup,
+        setAlterGroup,
+        alterCategory,
+        setAlterCategory,
+        alterItem,
+        setAlterItem,
+        alterUnit,
+        setAlterUnit,
+        alterGodown,
+        setAlterGodown,
+      }}
+    >
+      {children}
+    </StockAlterContext.Provider>
   );
 };

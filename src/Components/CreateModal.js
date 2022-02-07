@@ -8,6 +8,8 @@ import {
   Row,
   InputGroup,
   FormControl,
+  Table,
+  FormSelect,
 } from "react-bootstrap";
 import { SideBarContext } from "../store/SideMenuContext";
 import { AuthContext, FirebaseContext } from "../store/Context";
@@ -27,6 +29,12 @@ function CreateModal() {
   const [value, setValue] = useState();
 
   const [items2, setItems2] = useState(false);
+  const [showBatchModal, setShowBatchModal] = useState(false);
+  const [godown, setGodown] = useState("")
+  const [batch, setBatch] = useState("");
+  const [mfgDt, setMfgDt] = useState("");
+  const [expDt, setExpDt] = useState("");
+
 
   const {
     showCreate,
@@ -38,7 +46,6 @@ function CreateModal() {
     createUnit,
     setCreateUnit,
     createGodown,
-    setCreateGodown,
     createItem,
     setCreateItem,
     titles,
@@ -46,13 +53,31 @@ function CreateModal() {
     labelTwo,
     labelThree,
     placeHolder,
+    placeHolder2,
+    setPlaceHolder2,
+    isAlter,
+    setIsAlter,
+    underSelection,
+    setUnderSelection,
+    phUnit,
+    setPhUnit,
+    phQty,
+    setPhQty,
+    phRate,
+    setPhRate,
+    phValue,
+    setPhValue,
   } = useContext(SideBarContext);
-  // const [show, setShow] = useState(false);
 
   const handleClose = () => {
+    setPhValue(null);
+    setPhRate(null);
+    setPhUnit(null);
+    setUnderSelection(null);
     setGName(null);
     setUnder(null);
     setUnit(null);
+
     setShowCreate(false);
     setCreateCategory(false);
     setCreateGroup(false);
@@ -115,7 +140,7 @@ function CreateModal() {
     getCategory();
     getGodown();
   }, [db]);
-  console.log("GodownDetails", userDetails.company);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (createGroup === true) {
@@ -144,7 +169,7 @@ function CreateModal() {
         //,general
         symbol: gName,
         formalName: gName2,
-        uqc: uqc,
+        uqc: unit,
       }).then(() => {
         handleClose();
         alert("Unit Created sucsessfull");
@@ -167,26 +192,36 @@ function CreateModal() {
           alert("Godown Created successfull");
         });
     } else if (createItem === true) {
-      const StockItemRef = await collection(db, "Stock Items");
-
-      setDoc(doc(StockItemRef), {
-        arrivedFrom:"Opening Balance",
-        factory: userDetails.company,
-        itemName: gName,
-        under: under,
-        unit: unit,
-        quantity,
-        rate,
-        value,
-        
-      }).catch((e) => {
-        console.log(e);
-        alert("Error :",e)
-      }).then(() => {
-        handleClose();
-        alert("Item Added Successfull")
-      })
+      setShowBatchModal(true);
     }
+  };
+
+  const handleSubmitItem = async () => {
+  
+    const StockItemRef = await collection(db, "Stock Items");
+
+    setDoc(doc(StockItemRef), {
+      arrivedFrom: "Opening Balance",
+      factory: userDetails.company,
+      itemName: gName,
+      under: under,
+      unit: unit,
+      quantity,
+      rate,
+      value,
+      godown,
+      batch,
+      mfgDt,
+      expDt
+    })
+      .catch((e) => {
+        console.log(e);
+        alert("Error :", e);
+      })
+      .then(() => {
+        handleClose();
+        alert("Item Added Successfull");
+      });
   };
 
   const [newUQC, setNewUQC] = useState(false);
@@ -231,7 +266,7 @@ function CreateModal() {
         </Modal.Header>
 
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form>
             {/* **************************gName Input***************************** */}
             <Form.Group
               as={Row}
@@ -245,10 +280,10 @@ function CreateModal() {
                 <Form.Control
                   type="text"
                   plaintext
-                  placeholder={placeHolder}
+                  placeholder={placeHolder2 ? placeHolder2 : placeHolder}
                   value={gName}
                   onChange={(e) => {
-                    setGName(e.target.value);
+                    setGName(e.target.value.toUpperCase());
                   }}
                 />
               </Col>
@@ -260,7 +295,7 @@ function CreateModal() {
                 className="mb-3"
                 controlId="formPlaintextEmail"
               >
-                <Form.Label placeholder="Type Group Name ..." column sm="4">
+                <Form.Label column sm="4">
                   {labelTwo}
                 </Form.Label>
                 <Col sm="8">
@@ -294,7 +329,11 @@ function CreateModal() {
                         setUnder(e.target.value);
                       }}
                     >
-                      <option value="abc">*Primary</option>
+                      <option
+                        value={underSelection ? underSelection : "Primary"}
+                      >
+                        {underSelection ? underSelection : "Primary"}
+                      </option>
                       {godownDetails.map((obj) => (
                         <option>{obj.godownName}</option>
                       ))}
@@ -307,13 +346,18 @@ function CreateModal() {
                         setUnder(e.target.value);
                       }}
                     >
-                      <option value="abc">Primary</option>
+                      <option
+                        value={underSelection ? underSelection : "Primary"}
+                      >
+                        {underSelection ? underSelection : "Primary"}
+                      </option>
 
                       {categoryDetails.map((obj) => (
                         <option value={obj.categoryName}>
                           {obj.categoryName}
                         </option>
                       ))}
+                      <option value="none"> None</option>
                     </Form.Select>
                   )}
                 </Col>
@@ -331,13 +375,13 @@ function CreateModal() {
                 <Col sm="8">
                   <Form.Select
                     aria-label="Default select example"
-                    value={unit}
                     onChange={(e) => {
                       setUnit(e.target.value);
                     }}
                   >
-                    <option value="Not Applicable">Not Applicable</option>
-
+                    <option value="Not Applicable">
+                      {underSelection ? underSelection : "Not Applicable"}
+                    </option>
                     <option value="BAG-BAGS">BAG-BAGS</option>
                     <option value="BOX-BOX">BOX-BOX</option>
                     <option value="BTL-BOTTLES">BTL-BOTTLES</option>
@@ -372,7 +416,7 @@ function CreateModal() {
                       setUnit(e.target.value);
                     }}
                   >
-                    <option value="Not Applicable">* Not Applicable</option>
+                    <option>{phUnit ? phUnit : "Not Applicable"}</option>
                     {unitDetails.map((obj) => (
                       <option>{`${obj.symbol}`} </option>
                     ))}
@@ -396,22 +440,23 @@ function CreateModal() {
                   className="mb-3"
                   controlId="formPlaintextEmail"
                 >
-                  <Form.Label placeholder="Type Group Name ..." column sm="4">
+                  <Form.Label column sm="4">
                     Quantity
                   </Form.Label>
                   <Col sm="8">
                     <InputGroup className="mb-3">
                       <FormControl
                         type="text"
-                        placeholder="Type Quantiny......"
+                        placeholder={phQty}
                         aria-describedby="basic-addon2"
                         value={quantity}
                         onChange={(e) => {
+                          setPhValue("");
                           setQuantity(e.target.value);
                         }}
                       />
                       <InputGroup.Text id="basic-addon2">
-                        {unit ? unit : "unit"}
+                        {unit ? unit : phUnit}
                       </InputGroup.Text>
                     </InputGroup>
                   </Col>
@@ -421,23 +466,24 @@ function CreateModal() {
                   className="mb-3"
                   controlId="formPlaintextEmail"
                 >
-                  <Form.Label placeholder="Type Group Name ..." column sm="4">
+                  <Form.Label column sm="4">
                     Rate
                   </Form.Label>
                   <Col sm="8">
                     <InputGroup className="mb-3">
                       <FormControl
                         type="text"
-                        placeholder="Type Rate......"
+                        placeholder={phRate ? phRate : "Type Rate......"}
                         aria-describedby="basic-addon2"
                         value={rate}
                         onChange={(e) => {
+                          setPhValue("");
                           setRate(e.target.value);
                           findValue(e.target.value);
                         }}
                       />
                       <InputGroup.Text id="basic-addon2">
-                        {`per ${unit}`}
+                        {`per ${unit ? unit : phUnit}`}
                       </InputGroup.Text>
                     </InputGroup>
                   </Col>
@@ -449,13 +495,13 @@ function CreateModal() {
                 className="mb-3"
                 controlId="formPlaintextEmail"
               >
-                <Form.Label placeholder="Type Group Name ..." column sm="4">
+                <Form.Label column sm="4">
                   Value
                 </Form.Label>
                 <Col sm="8">
                   <Form.Control
                     disabled
-                    placeholder={value}
+                    placeholder={phValue ? phValue : value}
                     value={value}
                     type="text"
                   />
@@ -468,10 +514,22 @@ function CreateModal() {
           <hr />
         </Modal.Footer>
         <Modal.Footer>
-          <Button variant="success" type="submit" onClick={handleSubmit}>
-            Submit
-          </Button>
-          <Button variant="danger" onClick={handleClose}>
+          {isAlter ? (
+            <div>
+              <Button variant="primary" type="submit" onClick={handleSubmit}>
+                Update
+              </Button>
+
+              <Button variant="danger" type="submit" onClick={handleSubmit}>
+                Delete
+              </Button>
+            </div>
+          ) : (
+            <Button variant="success" type="submit" onClick={handleSubmit}>
+              Submit
+            </Button>
+          )}
+          <Button variant="info" onClick={handleClose}>
             Cancel
           </Button>
         </Modal.Footer>
@@ -529,8 +587,8 @@ function CreateModal() {
 
       {/* ********************Batch Creation Modal ************************* */}
       <Modal
-        className="modalUQC"
-        show={items2}
+        className="batchModal"
+        show={showBatchModal}
         onHide={handleCloseUQC}
         backdrop="static"
         keyboard={false}
@@ -539,39 +597,80 @@ function CreateModal() {
         <Modal.Header
         // closeButton
         >
-          <Modal.Title>UQC Creation</Modal.Title>
+          <Modal.Title className="batchTitle">
+            <h4 className="batchHeading">{`Allocates of ${gName}`}</h4> <br />
+            <h5 className="batchHeading">{`for : ${quantity} ${unit}`}</h5>
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="formPlaintextEmail"
-            >
-              <Form.Label column sm="4">
-                UQC
-              </Form.Label>
-              <Col sm="8">
-                <Form.Control
-                  type="text"
-                  plaintext
-                  placeholder="Type Group Name"
-                  value={uqcName}
-                  onChange={(e) => {
-                    setUqcName(e.target.value);
-                  }}
-                />
-              </Col>
-            </Form.Group>
-          </Form>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Godown</th>
+                <th>Batch</th>
+                <th>Mfg Dt</th>
+                <th>Exp Dt</th>
+                <th>Rate</th>
+                <th>Qty</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <FormSelect value={godown} onChange={(e) => {
+                    setGodown(e.target.value)
+                  }}>
+                    <option>Main Location</option>
+                    {godownDetails.map((obj) => (
+                      <option>{obj.godownName}</option>
+                    ))}
+                  </FormSelect>
+                </td>
+                <td>
+                  <FormControl value={batch} onChange={(e)=>{setBatch(e.target.value)}} />
+                </td>
+                <td>
+                  <FormControl value={mfgDt} onChange={(e)=>{setMfgDt(e.target.value)}} type="date" />
+                </td>
+                <td>
+                  <FormControl type="date" placeholder={mfgDt + 365} value={expDt} onChange={(e)=>{setExpDt(e.target.value)}} />
+                </td>
+                <td>
+                  <InputGroup className="mb-3">
+                    <FormControl type="text" aria-describedby="basic-addon2" value={rate} onChange={(e)=>{setRate(e.target.value)}}  />
+                    <InputGroup.Text id="basic-addon2">{unit ? unit :'Per' }</InputGroup.Text>
+                  </InputGroup>
+                </td>
+                <td>
+                  <FormControl value={quantity} disabled type="number" />
+                </td>
+                <td>
+                  <FormControl value={value} disabled/>
+                </td>
+              </tr>
+
+              <tr>
+                <td colSpan={5}>Total Qty :</td>
+                <td>
+                  <FormControl disabled value={quantity}/>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="success" type="submit" onClick={handleSubmitUqc}>
+          <Button variant="success" type="submit" onClick={handleSubmitItem}>
             Submit
           </Button>
-          <Button variant="danger" onClick={handleCloseUQC}>
+          <Button
+            variant="danger"
+            onClick={() => {
+              setShowBatchModal(false);
+            }}
+          >
             Cancel
           </Button>
         </Modal.Footer>

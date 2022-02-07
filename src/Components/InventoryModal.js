@@ -1,7 +1,7 @@
 // ********New**********
 import React, { useContext, useState, useEffect } from "react";
 import { Modal, Button, Col, Card } from "react-bootstrap";
-import { SideBarContext } from "../store/SideMenuContext";
+import { SideBarContext, StockAlterContext } from "../store/SideMenuContext";
 
 function InventoryModal() {
   const [id, setId] = useState("");
@@ -13,7 +13,6 @@ function InventoryModal() {
     setCreateCategory,
     setCreateUnit,
     setCreateGodown,
-    createItem,
     setCreateItem,
     show,
     setShow,
@@ -35,6 +34,22 @@ function InventoryModal() {
     placeHolder,
     setPlaceHolder,
   } = useContext(SideBarContext);
+
+const {
+  showAlter,
+  setShowAlter,
+  alterGroup,
+  setAlterGroup,
+  alterCategory,
+  setAlterCategory,
+  alterItem,
+  setAlterItem,
+  alterUnit,
+  setAlterUnit,
+  alterGodown,
+  setAlterGodown,
+} = useContext(StockAlterContext);
+
   // const [show, setShow] = useState(false);
   const [modalOptions, setModalOptions] = useState("");
   const handleClose = () => {
@@ -93,14 +108,41 @@ function InventoryModal() {
       console.log(id);
     }
   };
-  console.log("idddd", id);
+
+
+// ***********************Alter Section Old**********************
+  const handleAlter = (e) => {
+    if (e.target.id === "alter") {
+      if (e.target.title === "Stock Group") {
+        setShowAlter(true);
+        setAlterGroup(true)
+
+      } else if (e.target.title === "Stock Category") {
+        setShowAlter(true);
+        setAlterCategory(true)
+      } else if (e.target.title === "Stock Item") {
+        setShowAlter(true);
+        setAlterItem(true)
+      } else if (e.target.title === "Unit") {
+        setShowAlter(true);
+        setAlterUnit(true)
+      } else if (e.target.title === "Godown") {
+        setShowAlter(true);
+        setAlterGodown(true)
+      }
+      
+    } else {
+      console.log("Its Not Alter Selection");
+    }
+  }
+
 
   return (
     <div>
       {/* <Button variant="primary" onClick={handleShow}>
           Launch static backdrop modal
         </Button> */}
-
+      {/* *************************Create Modal********************* */}
       <Modal
         show={show}
         onHide={handleClose}
@@ -121,7 +163,6 @@ function InventoryModal() {
             <Modal.Title className="text-Title">Inventory Master</Modal.Title>
           </Modal.Header>
         )}
-
         {create == true ? (
           <Modal.Body>
             <Card.Text
@@ -183,19 +224,70 @@ function InventoryModal() {
         ) : (
           ""
         )}
+        {/* * *************************End Create Modal********************* * * */}
 
+        {/* *************************Alter Modal********************* * */}
         {alter == true ? (
           <Modal.Body>
-            <Card.Text className="text-items">Stock Group</Card.Text>
-            <Card.Text className="text-items">Stock Category</Card.Text>
-            <Card.Text className="text-items">Stock Item</Card.Text>
-            <Card.Text className="text-items">Unit</Card.Text>
-            <Card.Text className="text-items">Godown</Card.Text>
+            <Card.Text
+              className="text-items"
+              id="alter"
+              title="Stock Group"
+              onClick={(e) => {
+                handleAlter(e);
+                // handleClose();
+              }}
+            >
+              Stock Group
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="alter"
+              title="Stock Category"
+              onClick={(e) => {
+                handleAlter(e);
+                // handleClose();
+              }}
+            >
+              Stock Category
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="alter"
+              title="Stock Item"
+              onClick={(e) => {
+                handleAlter(e);
+                // handleClose();
+              }}
+            >
+              Stock Item
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="alter"
+              title="Unit"
+              onClick={(e) => {
+                handleAlter(e);
+                // handleClose();
+              }}
+            >
+              Unit
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="alter"
+              title="Godown"
+              onClick={(e) => {
+                handleAlter(e);
+                // handleClose();
+              }}
+            >
+              Godown
+            </Card.Text>
           </Modal.Body>
         ) : (
           ""
         )}
-
         {list == true ? (
           <Modal.Body>
             <Card.Text className="text-items">Stock Group</Card.Text>
@@ -207,7 +299,6 @@ function InventoryModal() {
         ) : (
           ""
         )}
-
         {book == true ? (
           <Modal.Body>
             <span>boook</span>
@@ -221,6 +312,7 @@ function InventoryModal() {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* *************************End Alter Modal********************* * */}
     </div>
   );
 }
