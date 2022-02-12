@@ -2,14 +2,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import {
-  Button,
-  Card,
-  FormControl,
-  InputGroup,
-  Modal,
-  Table,
-} from "react-bootstrap";
+import { Button, Card, Modal } from "react-bootstrap";
 import { FirebaseContext } from "../store/Context";
 import { SideBarContext, StockAlterContext } from "../store/SideMenuContext";
 
@@ -17,87 +10,51 @@ function AlterModal() {
   const { db } = useContext(FirebaseContext);
   const [title, setTitle] = useState("");
   const [masterList, setMasterList] = useState([]);
-  const [showAlterPage, setShowAlterPage] = useState(false);
   const [value, setValue] = useState("");
-  const [heading1, setHeading1] = useState("");
-  const [heading2, setHeading2] = useState("");
-  const [heading3, setHeading3] = useState("");
-  const [heading4, setHeading4] = useState("");
-  const [heading5, setHeading5] = useState("");
-  const [heading6, setHeading6] = useState("");
-  const [data1, setData1] = useState("");
-  const [data2, setData2] = useState("");
-  const [data3, setData3] = useState("");
-  const [data4, setData4] = useState("");
-  const [data5, setData5] = useState("");
-  const [data6, setData6] = useState("");
-  const [collectionName, setCollectionName] = useState("");
+
   const {
     showAlter,
     setShowAlter,
     alterGroup,
-    setAlterGroup,
     alterCategory,
-    setAlterCategory,
     alterItem,
-    setAlterItem,
     alterUnit,
-    setAlterUnit,
     alterGodown,
-    setAlterGodown,
+    setDocId,
+    setDltTitle,
+    setDltBody,
+    setAlterDate,
   } = useContext(StockAlterContext);
 
   const {
     setLabelThree,
-    setCreateGroup,
-    setCreateCategory,
     setCreateUnit,
     setCreateGodown,
     setCreateItem,
-    show,
-    setShow,
-    create,
-    setCreate,
-    alter,
-    setAlter,
-    list,
-    setList,
-    book,
-    setBook,
-    showCreate,
     setShowCreate,
     setTitles,
-    labelOne,
     setLabelOne,
-    labelTwo,
     setLabelTwo,
-    placeHolder,
     setPlaceHolder,
-    isAlter,
     setIsAlter,
-    underSelection,
     setUnderSelection,
-    phUnit,
     setPhUnit,
-    phQty,
     setPhQty,
-    phRate,
     setPhRate,
-    phValue,
-    setPhValue,placeHolder2, setPlaceHolder2
+    setPhValue,
+    setPlaceHolder2,
+    setPhLot,
+    setPhMfgDt,
+    setphExpDt,
+    setPhGodown,
+    setPhBatch,
   } = useContext(SideBarContext);
   const handleCloseAlter = () => {
     setShowAlter(false);
     window.location.reload();
   };
 
-  const handleCloseAlterPage = () => {
-    setShowAlterPage(false);
-  };
 
-  const handleOpenAlterPage = () => {
-    setShowAlterPage(true);
-  };
 
   useEffect(() => {
     const getCollection = async () => {
@@ -147,7 +104,6 @@ function AlterModal() {
   }, [db, alterGroup, alterCategory, alterItem, alterUnit, alterGodown]);
 
   const onSelection = async (e) => {
-    
     setValue(e.target.dataset.value);
     // console.log("aasdf", e.target.dataset.value);
     if (alterGroup === true) {
@@ -160,6 +116,7 @@ function AlterModal() {
       querySnapshot.forEach((doc) => {
         const groupName = doc.data().groupName;
         const under = doc.data().under;
+        const docId = doc.id;
 
         console.log(doc.id, " => ", doc.data());
         setShowCreate(true);
@@ -169,6 +126,9 @@ function AlterModal() {
         setUnderSelection(under);
         setPlaceHolder(groupName);
         setIsAlter(true);
+        setDocId(docId);
+        setDltTitle("Delete Stock Group");
+        setDltBody(`Are you sure you want to delete ${groupName}  ?`);
       });
     } else if (alterCategory === true) {
       const q = query(
@@ -180,7 +140,7 @@ function AlterModal() {
       querySnapshot.forEach((doc) => {
         const categoryName = doc.data().categoryName;
         const under = doc.data().categoryUnder;
-
+        const docId = doc.id;
         console.log(doc.id, " => ", doc.data());
         setShowCreate(true);
         setTitles("Stock Category Alter");
@@ -189,6 +149,9 @@ function AlterModal() {
         setPlaceHolder(categoryName);
         setUnderSelection(under);
         setIsAlter(true);
+        setDocId(docId);
+        setDltTitle("Delete Stock Category");
+        setDltBody(`Are you sure you want to delete ${categoryName}  ?`);
       });
     } else if (alterItem === true) {
       const q = query(
@@ -204,10 +167,21 @@ function AlterModal() {
         const quantity = doc.data().quantity;
         const rate = doc.data().rate;
         const value = doc.data().value;
+        const lot = doc.data().lot;
+        const godown = doc.data().godown;
+        const batch = doc.data().batch;
+        const mfgDt = doc.data().mfgDt
+        const expDt =doc.data().expDt
+        const docId = doc.id;
+
 
         console.log(doc.id, " => ", doc.data());
         setShowCreate(true);
         setCreateItem(true);
+        setPhGodown(godown)
+        setPhBatch(batch)
+        setPhMfgDt(mfgDt)
+        setphExpDt(expDt)
         setTitles("Stock Item Alter");
         setLabelOne("Item Name");
         setLabelTwo("Under");
@@ -219,6 +193,11 @@ function AlterModal() {
         setPhRate(rate);
         setPhValue(value);
         setIsAlter(true);
+        setPhLot(lot);
+        setAlterDate(true)
+        setDocId(docId);
+        setDltTitle("Delete Stock Item");
+        setDltBody(`Are you sure you want to delete ${itemName}  ?`);
       });
     } else if (alterUnit === true) {
       const q = query(collection(db, "Units"), where("symbol", "==", value));
@@ -228,7 +207,8 @@ function AlterModal() {
         const symbol = doc.data().symbol;
         const formalName = doc.data().formalName;
         const uqc = doc.data().uqc;
-
+        const docId = doc.id;
+        
         console.log(doc.id, " => ", doc.data());
 
         setShowCreate(true);
@@ -242,17 +222,26 @@ function AlterModal() {
         setUnderSelection(uqc);
         // setUnderSelection(under);
         setIsAlter(true);
+        setDocId(docId);
+        setDltTitle("Delete Unit");
+        setDltBody(
+          `Are you sure you want to delete ${symbol}-${formalName}  ?`
+        );
       });
     } else if (alterGodown === true) {
-      const q = query(collection(db, "Godown"), where("godownName", "==", value));
+      const q = query(
+        collection(db, "Godown"),
+        where("godownName", "==", value)
+      );
       const querySnapshot = await getDocs(q);
 
       querySnapshot.forEach((doc) => {
         const godownName = doc.data().godownName;
         const under = doc.data().under;
-
+        const docId = doc.id;
+        
         console.log(doc.id, " => ", doc.data());
-       
+
         setShowCreate(true);
         setCreateGodown(true);
         setTitles("Godown Alter");
@@ -260,12 +249,15 @@ function AlterModal() {
         setLabelTwo("Under");
         setPlaceHolder(godownName);
         setUnderSelection(under);
+        setDocId(docId);
+        setIsAlter(true);
+        setDltTitle("Delete Godown");
+        setDltBody(`Are you sure you want to delete ${godownName}  ?`);
       });
     } else {
       alert("erorrrrrrrrrrrrrrrrrrrrrrrrr");
     }
   };
-  console.log(heading1, heading2, data1, data2);
   return (
     <div className="alterModal_parentDiv">
       <Modal

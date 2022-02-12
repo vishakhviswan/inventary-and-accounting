@@ -2,6 +2,7 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import AlterModal from "../Components/AlterModal";
+import ConfirmDltModal from "../Components/ConfirmDltModal";
 import CreateModal from "../Components/CreateModal";
 import InventoryHomeMenu from "../Components/InventoryHomeMenu";
 import InventoryHomeStock from "../Components/InventoryHomeStock";
@@ -30,6 +31,7 @@ function InventoryPage() {
           <InventoryModal />
           <CreateModal />
           <AlterModal />
+          <ConfirmDltModal/>
         </SideContext>
       </AlterContext>
     </div>

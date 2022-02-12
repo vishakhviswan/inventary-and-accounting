@@ -11,9 +11,14 @@ import {
   Table,
   FormSelect,
 } from "react-bootstrap";
-import { SideBarContext } from "../store/SideMenuContext";
+import { SideBarContext, StockAlterContext } from "../store/SideMenuContext";
 import { AuthContext, FirebaseContext } from "../store/Context";
-import { collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import "./Components.css";
 
 function CreateModal() {
@@ -22,19 +27,18 @@ function CreateModal() {
   const [gName2, setGName2] = useState("");
   const [under, setUnder] = useState("");
   const [unit, setUnit] = useState("");
-  const [uqc, setUqc] = useState("");
   const [uqcName, setUqcName] = useState("");
   const [quantity, setQuantity] = useState();
   const [rate, setRate] = useState();
   const [value, setValue] = useState();
+  const [lot, setLot] = useState("");
 
-  const [items2, setItems2] = useState(false);
-  const [showBatchModal, setShowBatchModal] = useState(false);
-  const [godown, setGodown] = useState("")
+
+
+  const [godown, setGodown] = useState("");
   const [batch, setBatch] = useState("");
   const [mfgDt, setMfgDt] = useState("");
   const [expDt, setExpDt] = useState("");
-
 
   const {
     showCreate,
@@ -54,25 +58,43 @@ function CreateModal() {
     labelThree,
     placeHolder,
     placeHolder2,
-    setPlaceHolder2,
     isAlter,
-    setIsAlter,
     underSelection,
     setUnderSelection,
     phUnit,
     setPhUnit,
     phQty,
-    setPhQty,
     phRate,
     setPhRate,
     phValue,
     setPhValue,
+    phLot,
+    setPhLot,
+    showBatchModal,
+    setShowBatchModal,
+    phMfgDt,
+    phExpDt,
+    phGodown,
+    phBatch,
   } = useContext(SideBarContext);
+
+  const {
+    alterGroup,
+    alterCategory,
+    alterItem,
+    alterUnit,
+    alterGodown,
+    setShowDltModal,
+    setPresentCollection,
+    alterDate,
+    setAlterDate,
+  } = useContext(StockAlterContext);
 
   const handleClose = () => {
     setPhValue(null);
     setPhRate(null);
     setPhUnit(null);
+    setPhLot(null);
     setUnderSelection(null);
     setGName(null);
     setUnder(null);
@@ -89,6 +111,10 @@ function CreateModal() {
     setNewUQC(false);
   };
 
+  const handleCloseBatchModal = () => {
+    setShowBatchModal(false);
+  };
+
   // const handleShow = () => setShowCreate(true);
 
   // const [groupDetails, setGroupDetails] = useState([]);
@@ -98,6 +124,15 @@ function CreateModal() {
   const [unitDetails, setUnitDetails] = useState([]);
   // **************** Get From Firebase ***************************
   const { userDetails } = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   const updateDate = () => {
+  //     if (isAlter === true) {
+  //       setAlterDate(true);
+  //     }
+  //   }
+  //  updateDate()
+  // }, [])
 
   useEffect(() => {
     const getUqc = async () => {
@@ -197,7 +232,6 @@ function CreateModal() {
   };
 
   const handleSubmitItem = async () => {
-  
     const StockItemRef = await collection(db, "Stock Items");
 
     setDoc(doc(StockItemRef), {
@@ -212,7 +246,8 @@ function CreateModal() {
       godown,
       batch,
       mfgDt,
-      expDt
+      expDt,
+      lot,
     })
       .catch((e) => {
         console.log(e);
@@ -239,6 +274,27 @@ function CreateModal() {
       handleCloseUQC();
       alert("UQC Added sucsessfull");
     });
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    if (alterGroup === true) {
+      setPresentCollection("StockGroup");
+      setShowDltModal(true);
+    } else if (alterCategory === true) {
+      setPresentCollection("StockCategory");
+      setShowDltModal(true);
+    } else if (alterItem === true) {
+      setPresentCollection("Stock Items");
+      setShowDltModal(true);
+    } else if (alterUnit === true) {
+      setPresentCollection("Units");
+      setShowDltModal(true);
+    } else if (alterGodown === true) {
+      setPresentCollection("Godown");
+      setShowDltModal(true);
+    }
   };
 
   const findValue = (rate) => {
@@ -440,6 +496,26 @@ function CreateModal() {
                   className="mb-3"
                   controlId="formPlaintextEmail"
                 >
+                  <Form.Group
+                    as={Row}
+                    className="mb-3"
+                    controlId="formPlaintextEmail"
+                  >
+                    <Form.Label column sm="4">
+                      Lot No.
+                    </Form.Label>
+                    <Col sm="8">
+                      <Form.Control
+                        placeholder={phLot ? phLot : lot}
+                        value={lot}
+                        onChange={(e) => {
+                          setLot(e.target.value);
+                        }}
+                        type="text"
+                      />
+                    </Col>
+                  </Form.Group>
+
                   <Form.Label column sm="4">
                     Quantity
                   </Form.Label>
@@ -520,7 +596,7 @@ function CreateModal() {
                 Update
               </Button>
 
-              <Button variant="danger" type="submit" onClick={handleSubmit}>
+              <Button variant="danger" type="submit" onClick={handleDelete}>
                 Delete
               </Button>
             </div>
@@ -589,7 +665,7 @@ function CreateModal() {
       <Modal
         className="batchModal"
         show={showBatchModal}
-        onHide={handleCloseUQC}
+        onHide={handleCloseBatchModal}
         backdrop="static"
         keyboard={false}
         // style={{ width: "max-content", marginLeft: "40%" }}
@@ -598,8 +674,13 @@ function CreateModal() {
         // closeButton
         >
           <Modal.Title className="batchTitle">
-            <h4 className="batchHeading">{`Allocates of ${gName}`}</h4> <br />
-            <h5 className="batchHeading">{`for : ${quantity} ${unit}`}</h5>
+            <h5 className="batchHeading">{`Allocates of ${
+              gName ? gName : placeHolder
+            }`}</h5>
+            <h5 className="batchHeading">{`for : ${
+              quantity ? quantity : phQty
+            } ${unit ? unit : phUnit}`}</h5>
+            <h5 className="batchHeading">{`Lot No. : ${lot ? lot : phLot}`}</h5>
           </Modal.Title>
         </Modal.Header>
 
@@ -619,61 +700,130 @@ function CreateModal() {
             <tbody>
               <tr>
                 <td>
-                  <FormSelect value={godown} onChange={(e) => {
-                    setGodown(e.target.value)
-                  }}>
-                    <option>Main Location</option>
+                  <FormSelect
+                    value={godown}
+                    onChange={(e) => {
+                      setGodown(e.target.value);
+                    }}
+                  >
+                    <option>{phGodown ? phGodown : "Main Location"}</option>
                     {godownDetails.map((obj) => (
                       <option>{obj.godownName}</option>
                     ))}
                   </FormSelect>
                 </td>
                 <td>
-                  <FormControl value={batch} onChange={(e)=>{setBatch(e.target.value)}} />
+                  <FormControl
+                    placeholder={phBatch ? phBatch : batch}
+                    value={batch}
+                    onChange={(e) => {
+                      setBatch(e.target.value);
+                    }}
+                  />
                 </td>
-                <td>
-                  <FormControl value={mfgDt} onChange={(e)=>{setMfgDt(e.target.value)}} type="date" />
-                </td>
-                <td>
-                  <FormControl type="date" placeholder={mfgDt + 365} value={expDt} onChange={(e)=>{setExpDt(e.target.value)}} />
-                </td>
+                {alterDate ? (
+                  <td>
+                    <FormControl
+                      type="text"
+                      placeHolder={phMfgDt}
+                      onChange={() => {
+                        setAlterDate(false);
+                      }}
+                    />
+                  </td>
+                ) : (
+                  <td>
+                    <FormControl
+                      value={mfgDt}
+                      onChange={(e) => {
+                        setMfgDt(e.target.value);
+                      }}
+                      type="date"
+                    />
+                  </td>
+                )}
+
+                {alterDate ? (
+                  <td>
+                    <FormControl
+                      placeHolder={phExpDt}
+                      type="text"
+                      onChange={() => {
+                        setAlterDate(false);
+                      }}
+                    />
+                  </td>
+                ) : (
+                  <td>
+                    <FormControl
+                      type="date"
+                      placeHolder={phExpDt}
+                      name="DOB"
+                      onChange={(e) => {
+                        setExpDt(e.target.value);
+                      }}
+                    />
+                  </td>
+                )}
                 <td>
                   <InputGroup className="mb-3">
-                    <FormControl type="text" aria-describedby="basic-addon2" value={rate} onChange={(e)=>{setRate(e.target.value)}}  />
-                    <InputGroup.Text id="basic-addon2">{unit ? unit :'Per' }</InputGroup.Text>
+                    <FormControl
+                      type="decimal"
+                      aria-describedby="basic-addon2"
+                      placeholder={rate ? rate : phRate}
+                      onChange={(e) => {
+                        setRate(e.target.value);
+                      }}
+                    />
+                    <InputGroup.Text id="basic-addon2">
+                      {unit ? unit : phUnit}
+                    </InputGroup.Text>
                   </InputGroup>
                 </td>
                 <td>
-                  <FormControl value={quantity} disabled type="number" />
+                  <FormControl
+                    placeHolder={quantity ? quantity : phQty}
+                    type="number"
+                  />
                 </td>
                 <td>
-                  <FormControl value={value} disabled/>
+                  <FormControl
+                    disabled
+                    placeHolder={value ? value : phValue}
+                  />
                 </td>
               </tr>
 
               <tr>
                 <td colSpan={5}>Total Qty :</td>
                 <td>
-                  <FormControl disabled value={quantity}/>
+                  <FormControl disabled value={quantity ? quantity : phQty} />
                 </td>
               </tr>
             </tbody>
           </Table>
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="success" type="submit" onClick={handleSubmitItem}>
-            Submit
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() => {
-              setShowBatchModal(false);
-            }}
-          >
-            Cancel
-          </Button>
-        </Modal.Footer>
+        {isAlter ? (
+          <Modal.Footer>
+            <Button variant="primary">Update</Button>
+            <Button variant="danger" onClick={handleDelete}>
+              Delete
+            </Button>
+            <Button variant="danger" onClick={handleCloseBatchModal}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        ) : (
+          <Modal.Footer>
+            <Button variant="success" type="submit" onClick={handleSubmitItem}>
+              Submit
+            </Button>
+            <Button variant="danger" onClick={handleCloseBatchModal}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        )}
       </Modal>
       {/* ******************** //Batch Creation Modal ************************* */}
     </div>

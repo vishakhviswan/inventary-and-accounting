@@ -26,11 +26,29 @@ export const SideContext = ({ children }) => {
   const [phQty, setPhQty] = useState('')
   const [phRate, setPhRate] = useState("");
   const [phValue, setPhValue] = useState("");
+  const [phLot, setPhLot] = useState("")
+  const [showBatchModal, setShowBatchModal] = useState(false);
+  const [phMfgDt, setPhMfgDt] = useState("")
+  const [phExpDt, setphExpDt] = useState("")
+  const [phGodown, setPhGodown] = useState("")
+  const [phBatch, setPhBatch] = useState("")
   return (
     <SideBarContext.Provider
       value={{
-        phUnit, setPhUnit,phQty, setPhQty,phRate, setPhRate,phValue, setPhValue,placeHolder2, setPlaceHolder2,
+        phMfgDt, setPhMfgDt,phExpDt, setphExpDt,phGodown, setPhGodown,phBatch, setPhBatch,
+        phUnit,
+        setPhUnit,
+        phQty,
+        setPhQty,
+        phRate,
+        setPhRate,
+        phValue,
+        setPhValue,
+        placeHolder2,
+        setPlaceHolder2,
         isAlter,
+        phLot,
+        setPhLot,
         setIsAlter,
         titles,
         setTitles,
@@ -41,8 +59,6 @@ export const SideContext = ({ children }) => {
         placeHolder,
         setPlaceHolder,
         createGroup,
-        createUnit,
-        setCreateUnit,
         setCreateGroup,
         labelThree,
         setLabelThree,
@@ -68,6 +84,8 @@ export const SideContext = ({ children }) => {
         setShowCreate,
         underSelection,
         setUnderSelection,
+        showBatchModal,
+        setShowBatchModal,
       }}
     >
       {children}
@@ -84,10 +102,18 @@ export const AlterContext = ({ children}) => {
   const [alterItem, setAlterItem] = useState(false);
   const [alterUnit, setAlterUnit] = useState(false);
   const [alterGodown, setAlterGodown] = useState(false);
+  const [docId, setDocId] = useState("")
+  const [showDltModal, setShowDltModal] = useState(false);
+  const [presentCollection, setPresentCollection] = useState("");
+  const [dltTitle, setDltTitle] = useState("");
+  const [dltBody, setDltBody] = useState("");
+  const [alterDate, setAlterDate] = useState(false);
   return (
     <StockAlterContext.Provider
       value={{
         showAlter,
+        docId,
+        setDocId,
         setShowAlter,
         alterGroup,
         setAlterGroup,
@@ -99,6 +125,16 @@ export const AlterContext = ({ children}) => {
         setAlterUnit,
         alterGodown,
         setAlterGodown,
+        showDltModal,
+        setShowDltModal,
+        presentCollection,
+        setPresentCollection,
+        dltTitle,
+        setDltTitle,
+        dltBody,
+        setDltBody,
+        alterDate,
+        setAlterDate,
       }}
     >
       {children}

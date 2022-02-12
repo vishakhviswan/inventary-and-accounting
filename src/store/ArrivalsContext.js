@@ -9,6 +9,7 @@ export const TopContext = ({ children }) => {
   const [date, setDate] = useState("");
   const [lot, setLot] = useState("");
   const [validated, setValidated] = useState(false);
+  
   return (
     <TopBarContext.Provider
       value={{

@@ -1,11 +1,10 @@
 // ********New**********
-import React, { useContext, useState, useEffect } from "react";
-import { Modal, Button, Col, Card } from "react-bootstrap";
+import React, { useContext, useState } from "react";
+import { Modal, Button, Card } from "react-bootstrap";
 import { SideBarContext, StockAlterContext } from "../store/SideMenuContext";
 
 function InventoryModal() {
   const [id, setId] = useState("");
-  const [title, setTitle] = useState("");
 
   const {
     setLabelThree,
@@ -24,34 +23,31 @@ function InventoryModal() {
     setList,
     book,
     setBook,
-    showCreate,
+
     setShowCreate,
     setTitles,
-    labelOne,
+
     setLabelOne,
-    labelTwo,
+
     setLabelTwo,
-    placeHolder,
+
     setPlaceHolder,
   } = useContext(SideBarContext);
 
-const {
-  showAlter,
-  setShowAlter,
-  alterGroup,
-  setAlterGroup,
-  alterCategory,
-  setAlterCategory,
-  alterItem,
-  setAlterItem,
-  alterUnit,
-  setAlterUnit,
-  alterGodown,
-  setAlterGodown,
-} = useContext(StockAlterContext);
+  const {
+    setShowAlter,
 
-  // const [show, setShow] = useState(false);
-  const [modalOptions, setModalOptions] = useState("");
+    setAlterGroup,
+
+    setAlterCategory,
+
+    setAlterItem,
+
+    setAlterUnit,
+
+    setAlterGodown,
+  } = useContext(StockAlterContext);
+
   const handleClose = () => {
     setShow(false);
     setCreate(false);
@@ -59,12 +55,9 @@ const {
     setList(false);
     setBook(false);
   };
-  const handleShow = () => setShow(true);
-  const chkOpt = "Create";
 
   const handleCreate = (e) => {
     setId(e.target.id);
-    setTitle(e.target.title);
     if (e.target.id === "create") {
       if (e.target.title === "Stock Group") {
         setShowCreate(true);
@@ -80,7 +73,7 @@ const {
         setLabelOne("Category Name");
         setLabelTwo("Under");
         setPlaceHolder("Type Category Name");
-      } else if (e.target.title == "Unit") {
+      } else if (e.target.title === "Unit") {
         setShowCreate(true);
         setCreateUnit(true);
         setTitles("Unit Creation");
@@ -101,7 +94,7 @@ const {
         setTitles("Stock Item Creation");
         setLabelOne("Item Name");
         setLabelTwo("Under");
-        setLabelThree("Units")
+        setLabelThree("Units");
         setPlaceHolder("Type Here....");
       }
     } else {
@@ -109,33 +102,29 @@ const {
     }
   };
 
-
-// ***********************Alter Section Old**********************
+  // ***********************Alter Section Old**********************
   const handleAlter = (e) => {
     if (e.target.id === "alter") {
       if (e.target.title === "Stock Group") {
         setShowAlter(true);
-        setAlterGroup(true)
-
+        setAlterGroup(true);
       } else if (e.target.title === "Stock Category") {
         setShowAlter(true);
-        setAlterCategory(true)
+        setAlterCategory(true);
       } else if (e.target.title === "Stock Item") {
         setShowAlter(true);
-        setAlterItem(true)
+        setAlterItem(true);
       } else if (e.target.title === "Unit") {
         setShowAlter(true);
-        setAlterUnit(true)
+        setAlterUnit(true);
       } else if (e.target.title === "Godown") {
         setShowAlter(true);
-        setAlterGodown(true)
+        setAlterGodown(true);
       }
-      
     } else {
       console.log("Its Not Alter Selection");
     }
-  }
-
+  };
 
   return (
     <div>
@@ -150,7 +139,7 @@ const {
         keyboard={false}
         style={{ width: "max-content", marginLeft: "40%" }}
       >
-        {book == true ? (
+        {book === true ? (
           <Modal.Header
           // closeButton
           >
@@ -163,7 +152,7 @@ const {
             <Modal.Title className="text-Title">Inventory Master</Modal.Title>
           </Modal.Header>
         )}
-        {create == true ? (
+        {create === true ? (
           <Modal.Body>
             <Card.Text
               className="text-items"
@@ -227,7 +216,7 @@ const {
         {/* * *************************End Create Modal********************* * * */}
 
         {/* *************************Alter Modal********************* * */}
-        {alter == true ? (
+        {alter === true ? (
           <Modal.Body>
             <Card.Text
               className="text-items"
@@ -288,7 +277,7 @@ const {
         ) : (
           ""
         )}
-        {list == true ? (
+        {list === true ? (
           <Modal.Body>
             <Card.Text className="text-items">Stock Group</Card.Text>
             <Card.Text className="text-items">Stock Category</Card.Text>
@@ -299,7 +288,7 @@ const {
         ) : (
           ""
         )}
-        {book == true ? (
+        {book === true ? (
           <Modal.Body>
             <span>boook</span>
           </Modal.Body>

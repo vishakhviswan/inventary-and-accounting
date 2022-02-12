@@ -1,12 +1,31 @@
 // ********New**********
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Col, Row, Table } from "react-bootstrap";
 import DashBoardStock from "../datas/DashBoardStock";
+import { collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
 
 import "./Components.css";
+import { useContext } from "react";
+import { FirebaseContext } from "../store/Context";
+import { useState } from "react";
+
 function InventoryHomeStock() {
   const datas = DashBoardStock;
+  const { db } = useContext(FirebaseContext);
+  const [stockDetails, setStockDetails] = useState([]);
 
+  useEffect(() => {
+    const getStock = async () => {
+      const stockData = await getDocs(collection(db, "Stock Items"));
+      setStockDetails(
+        stockData.docs.map((doc) => ({
+          ...doc.data(),
+        }))
+      );
+    };
+    getStock();
+  }, [db]);
+  console.log("stockdata", stockDetails);
   return (
     <div className="inventoryHomeStock_Pd">
       <div className="inventoryHomeStock_Cd">
@@ -34,16 +53,15 @@ function InventoryHomeStock() {
             <Card.Text>
               <Table striped bordered hover>
                 <tbody>
-                  {datas.map((data) => {
-                    const { name, quantity, lots } = data;
-                    return (
-                      <tr>
-                        <td>{name}</td>
-                        <td>{quantity}</td>
-                        <td>{`${lots} Lots`} </td>
-                      </tr>
-                    );
-                  })}
+                  {stockDetails.map((obj) => (
+                    <tr>
+                      <td>{obj.under}</td>
+                      <td>
+                        {obj.quantity} {obj.unit}
+                      </td>
+                      <td>{obj.batch} batch </td>
+                    </tr>
+                  ))}
                 </tbody>
               </Table>
             </Card.Text>

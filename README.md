@@ -72,3 +72,26 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 Pages:
 Inventory:{Arrived Materials, Despatch Materials, Processing}
+
+In Cashew Manufacturing Unit
+samples
+categories{
+    Raw Cashew Nuts
+    Boiled Cashew Nuts
+    Cutting Kernels
+    CK After Borma
+    Peeling Machine Kernels
+    Peeled Kernels
+    PK After Borma
+    Graded Kernels
+}
+Groups{
+    Rcn
+    Bcn
+    CK Wholes
+    Ck Pieces
+    CKAB Wholes
+    CKAB Pieces
+    
+}
+   
