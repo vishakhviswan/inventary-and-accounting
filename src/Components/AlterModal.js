@@ -54,8 +54,6 @@ function AlterModal() {
     window.location.reload();
   };
 
-
-
   useEffect(() => {
     const getCollection = async () => {
       if (alterGroup === true) {
@@ -170,18 +168,17 @@ function AlterModal() {
         const lot = doc.data().lot;
         const godown = doc.data().godown;
         const batch = doc.data().batch;
-        const mfgDt = doc.data().mfgDt
-        const expDt =doc.data().expDt
+        const mfgDt = doc.data().mfgDt;
+        const expDt = doc.data().expDt;
         const docId = doc.id;
-
 
         console.log(doc.id, " => ", doc.data());
         setShowCreate(true);
         setCreateItem(true);
-        setPhGodown(godown)
-        setPhBatch(batch)
-        setPhMfgDt(mfgDt)
-        setphExpDt(expDt)
+        setPhGodown(godown);
+        setPhBatch(batch);
+        setPhMfgDt(mfgDt);
+        setphExpDt(expDt);
         setTitles("Stock Item Alter");
         setLabelOne("Item Name");
         setLabelTwo("Under");
@@ -194,7 +191,7 @@ function AlterModal() {
         setPhValue(value);
         setIsAlter(true);
         setPhLot(lot);
-        setAlterDate(true)
+        setAlterDate(true);
         setDocId(docId);
         setDltTitle("Delete Stock Item");
         setDltBody(`Are you sure you want to delete ${itemName}  ?`);
@@ -208,7 +205,7 @@ function AlterModal() {
         const formalName = doc.data().formalName;
         const uqc = doc.data().uqc;
         const docId = doc.id;
-        
+
         console.log(doc.id, " => ", doc.data());
 
         setShowCreate(true);
@@ -239,7 +236,7 @@ function AlterModal() {
         const godownName = doc.data().godownName;
         const under = doc.data().under;
         const docId = doc.id;
-        
+
         console.log(doc.id, " => ", doc.data());
 
         setShowCreate(true);

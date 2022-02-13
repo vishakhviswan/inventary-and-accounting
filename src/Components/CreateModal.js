@@ -18,6 +18,8 @@ import {
   getDocs,
   doc,
   setDoc,
+  updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import "./Components.css";
 
@@ -33,12 +35,11 @@ function CreateModal() {
   const [value, setValue] = useState();
   const [lot, setLot] = useState("");
 
-
-
   const [godown, setGodown] = useState("");
   const [batch, setBatch] = useState("");
   const [mfgDt, setMfgDt] = useState("");
   const [expDt, setExpDt] = useState("");
+  const [collectionName, setCollectionName] = useState("");
 
   const {
     showCreate,
@@ -88,6 +89,7 @@ function CreateModal() {
     setPresentCollection,
     alterDate,
     setAlterDate,
+    docId,
   } = useContext(StockAlterContext);
 
   const handleClose = () => {
@@ -124,6 +126,7 @@ function CreateModal() {
   const [unitDetails, setUnitDetails] = useState([]);
   // **************** Get From Firebase ***************************
   const { userDetails } = useContext(AuthContext);
+  const [alterValidated, setAlterValidated] = useState(false);
 
   // useEffect(() => {
   //   const updateDate = () => {
@@ -178,57 +181,178 @@ function CreateModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (createGroup === true) {
-      const StockGroupRef = collection(db, "StockGroup");
-      setDoc(doc(StockGroupRef), {
-        //,general
-        groupName: gName,
-        under: under,
-      }).then(() => {
-        handleClose();
-        alert("Group submitted sucsessfull");
-      });
-    } else if (createCategory === true) {
-      const StockCollectionRef = collection(db, "StockCategory");
-      setDoc(doc(StockCollectionRef), {
-        //,general
-        categoryName: gName,
-        categoryUnder: under,
-      }).then(() => {
-        handleClose();
-        alert("Category submitted sucsessfull");
-      });
-    } else if (createUnit === true) {
-      const StockUnitRef = collection(db, "Units");
-      setDoc(doc(StockUnitRef), {
-        //,general
-        symbol: gName,
-        formalName: gName2,
-        uqc: unit,
-      }).then(() => {
-        handleClose();
-        alert("Unit Created sucsessfull");
-      });
-    } else if (createGodown === true) {
-      const StockGodownRef = await collection(db, "Godown");
-
-      setDoc(doc(StockGodownRef), {
-        //,general
-        factory: userDetails.company,
-        godownName: gName,
-        under: under,
-      })
-        .catch((e) => {
-          console.log(e);
-          alert("error", e);
-        })
-        .then(() => {
-          handleClose();
-          alert("Godown Created successfull");
-        });
-    } else if (createItem === true) {
-      setShowBatchModal(true);
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
     }
+    setAlterValidated(true);
+    console.log("valid", form.checkValidity());
+
+    if (form.checkValidity() === true) {
+      if (createGroup === true) {
+        const StockGroupRef = collection(db, "StockGroup");
+        setDoc(doc(StockGroupRef), {
+          //,general
+          groupName: gName,
+          under: under,
+        }).then(() => {
+          handleClose();
+          alert("Group submitted sucsessfull");
+        });
+      } else if (createCategory === true) {
+        const StockCollectionRef = collection(db, "StockCategory");
+        setDoc(doc(StockCollectionRef), {
+          //,general
+          categoryName: gName,
+          categoryUnder: under,
+        }).then(() => {
+          handleClose();
+          alert("Category submitted sucsessfull");
+        });
+      } else if (createUnit === true) {
+        const StockUnitRef = collection(db, "Units");
+        setDoc(doc(StockUnitRef), {
+          //,general
+          symbol: gName,
+          formalName: gName2,
+          uqc: unit,
+        }).then(() => {
+          handleClose();
+          alert("Unit Created sucsessfull");
+        });
+      } else if (createGodown === true) {
+        const StockGodownRef = await collection(db, "Godown");
+
+        setDoc(doc(StockGodownRef), {
+          //,general
+          factory: userDetails.company,
+          godownName: gName,
+          under: under,
+        })
+          .catch((e) => {
+            console.log(e);
+            alert("error", e);
+          })
+          .then(() => {
+            handleClose();
+            alert("Godown Created successfull");
+          });
+      } else if (createItem === true) {
+        setShowBatchModal(true);
+      }
+    }
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setAlterValidated(true);
+    console.log(form.checkValidity());
+
+    if (form.checkValidity() === true) {
+      if (isAlter === true) {
+        if (alterGroup === true) {
+          const alterGroupRef = doc(db, "StockGroup", docId);
+          updateDoc(alterGroupRef, {
+            updatedOn: serverTimestamp(),
+            groupName: gName,
+            under: under,
+          })
+            .catch((e) => {
+              console.log(e);
+              alert("error", e);
+            })
+            .then(() => {
+              handleClose();
+              alert("Stock Group Updated successfull");
+            });
+        } else if (alterCategory === true) {
+          const alterCategoryRef = doc(db, "StockCategory", docId);
+          updateDoc(alterCategoryRef, {
+            updatedOn: serverTimestamp(),
+            categoryName: gName,
+            categoryUnder: under,
+          })
+            .catch((e) => {
+              console.log(e);
+              alert("error", e);
+            })
+            .then(() => {
+              handleClose();
+              alert("Stock Category Updated successfull");
+            });
+        } else if (alterUnit === true) {
+          const alterUnitRef = doc(db, "Units", docId);
+          updateDoc(alterUnitRef, {
+            updatedOn: serverTimestamp(),
+            symbol: gName,
+            formalName: gName2,
+            uqc: unit,
+          })
+            .catch((e) => {
+              console.log(e);
+              alert("error", e);
+            })
+            .then(() => {
+              handleClose();
+              alert("Unit Updated successfull");
+            });
+        } else if (alterGodown === true) {
+          const alterGodownRef = doc(db, "Godown", docId);
+          updateDoc(alterGodownRef, {
+            updatedOn: serverTimestamp(),
+            factory: userDetails.company,
+            godownName: gName,
+            under: under,
+          })
+            .catch((e) => {
+              console.log(e);
+              alert("error", e);
+            })
+            .then(() => {
+              handleClose();
+              alert("Godown Updated successfull");
+            });
+        } else if (alterItem === true) {
+          setShowBatchModal(true);
+        }
+      }
+    } else {
+      alert("please check curruption");
+    }
+  };
+  const handleUpdateItem = async () => {
+    const alterItemRef = doc(db, "Stock Items", docId);
+
+    await updateDoc(alterItemRef, {
+      updatedOn: serverTimestamp(),
+      arrivedFrom: "Opening Balance",
+      factory: userDetails.company,
+      itemName: gName,
+      under: under,
+      unit: unit,
+      quantity,
+      rate,
+      value,
+      godown,
+      batch,
+      mfgDt,
+      expDt,
+      lot,
+    })
+      .catch((e) => {
+        console.log(e);
+        alert("Error :", e);
+      })
+      .then(() => {
+        handleClose();
+        alert("Item Updated Successfull");
+      });
   };
 
   const handleSubmitItem = async () => {
@@ -315,14 +439,19 @@ function CreateModal() {
         keyboard={false}
         // style={{ width: "max-content", marginLeft: "40%" }}
       >
-        <Modal.Header
-        // closeButton
+        <Form
+          noValidate
+          validated={alterValidated}
+          onSubmit={isAlter === true ? handleUpdate : handleSubmit}
         >
-          <Modal.Title>{titles}</Modal.Title>
-        </Modal.Header>
+          <Modal.Header
+          // closeButton
+          >
+            <Modal.Title>{titles}</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Body>
-          <Form>
+          <Modal.Body>
+            {/* <Form noValidate validated={alterValidated} onSubmit={handleSubmit}> */}
             {/* **************************gName Input***************************** */}
             <Form.Group
               as={Row}
@@ -334,14 +463,19 @@ function CreateModal() {
               </Form.Label>
               <Col sm="8">
                 <Form.Control
+                  required
                   type="text"
                   plaintext
                   placeholder={placeHolder2 ? placeHolder2 : placeHolder}
-                  value={gName}
+                  // value={gName}
                   onChange={(e) => {
                     setGName(e.target.value.toUpperCase());
                   }}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please Enter a Value in Input Field
+                </Form.Control.Feedback>
               </Col>
             </Form.Group>
             {/* **************************gName2 Input unit***************************** */}
@@ -356,6 +490,7 @@ function CreateModal() {
                 </Form.Label>
                 <Col sm="8">
                   <Form.Control
+                    required
                     type="text"
                     plaintext
                     placeholder={placeHolder}
@@ -396,6 +531,8 @@ function CreateModal() {
                     </Form.Select>
                   ) : (
                     <Form.Select
+                      required
+                      placeholder="Abvuig"
                       aria-label="Default select example"
                       value={under}
                       onChange={(e) => {
@@ -403,6 +540,7 @@ function CreateModal() {
                       }}
                     >
                       <option
+                        disabled={underSelection ? "true" : "false"}
                         value={underSelection ? underSelection : "Primary"}
                       >
                         {underSelection ? underSelection : "Primary"}
@@ -482,133 +620,136 @@ function CreateModal() {
             ) : (
               ""
             )}
-          </Form>
-        </Modal.Body>
+            {/* </Form> */}
+          </Modal.Body>
 
-        <Modal.Footer>
-          <hr />
-          {createItem === true ? (
-            <Form>
-              <Row>
-                <Modal.Title>Opening Balance</Modal.Title>
-                <Form.Group
-                  as={Row}
-                  className="mb-3"
-                  controlId="formPlaintextEmail"
-                >
+          <Modal.Footer>
+            <hr />
+            {createItem === true ? (
+              <Form noValidate validated={alterValidated}>
+                <Row>
+                  <Modal.Title>Opening Balance</Modal.Title>
+                  <Form.Group
+                    as={Row}
+                    className="mb-3"
+                    controlId="formPlaintextEmail"
+                  >
+                    <Form.Group
+                      as={Row}
+                      className="mb-3"
+                      controlId="formPlaintextEmail"
+                    >
+                      <Form.Label column sm="4">
+                        Lot No.
+                      </Form.Label>
+                      <Col sm="8">
+                        <Form.Control
+                          required
+                          placeholder={phLot ? phLot : lot}
+                          value={lot}
+                          onChange={(e) => {
+                            setLot(e.target.value);
+                          }}
+                          type="text"
+                        />
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Label column sm="4">
+                      Quantity
+                    </Form.Label>
+                    <Col sm="8">
+                      <InputGroup className="mb-3">
+                        <FormControl
+                          type="text"
+                          placeholder={phQty}
+                          aria-describedby="basic-addon2"
+                          value={quantity}
+                          onChange={(e) => {
+                            setPhValue("");
+                            setQuantity(e.target.value);
+                          }}
+                        />
+                        <InputGroup.Text id="basic-addon2">
+                          {unit ? unit : phUnit}
+                        </InputGroup.Text>
+                      </InputGroup>
+                    </Col>
+                  </Form.Group>
                   <Form.Group
                     as={Row}
                     className="mb-3"
                     controlId="formPlaintextEmail"
                   >
                     <Form.Label column sm="4">
-                      Lot No.
+                      Rate
                     </Form.Label>
                     <Col sm="8">
-                      <Form.Control
-                        placeholder={phLot ? phLot : lot}
-                        value={lot}
-                        onChange={(e) => {
-                          setLot(e.target.value);
-                        }}
-                        type="text"
-                      />
+                      <InputGroup className="mb-3">
+                        <FormControl
+                          type="text"
+                          placeholder={phRate ? phRate : "Type Rate......"}
+                          aria-describedby="basic-addon2"
+                          value={rate}
+                          onChange={(e) => {
+                            setPhValue("");
+                            setRate(e.target.value);
+                            findValue(e.target.value);
+                          }}
+                        />
+                        <InputGroup.Text id="basic-addon2">
+                          {`per ${unit ? unit : phUnit}`}
+                        </InputGroup.Text>
+                      </InputGroup>
                     </Col>
                   </Form.Group>
+                </Row>
 
-                  <Form.Label column sm="4">
-                    Quantity
-                  </Form.Label>
-                  <Col sm="8">
-                    <InputGroup className="mb-3">
-                      <FormControl
-                        type="text"
-                        placeholder={phQty}
-                        aria-describedby="basic-addon2"
-                        value={quantity}
-                        onChange={(e) => {
-                          setPhValue("");
-                          setQuantity(e.target.value);
-                        }}
-                      />
-                      <InputGroup.Text id="basic-addon2">
-                        {unit ? unit : phUnit}
-                      </InputGroup.Text>
-                    </InputGroup>
-                  </Col>
-                </Form.Group>
                 <Form.Group
                   as={Row}
                   className="mb-3"
                   controlId="formPlaintextEmail"
                 >
                   <Form.Label column sm="4">
-                    Rate
+                    Value
                   </Form.Label>
                   <Col sm="8">
-                    <InputGroup className="mb-3">
-                      <FormControl
-                        type="text"
-                        placeholder={phRate ? phRate : "Type Rate......"}
-                        aria-describedby="basic-addon2"
-                        value={rate}
-                        onChange={(e) => {
-                          setPhValue("");
-                          setRate(e.target.value);
-                          findValue(e.target.value);
-                        }}
-                      />
-                      <InputGroup.Text id="basic-addon2">
-                        {`per ${unit ? unit : phUnit}`}
-                      </InputGroup.Text>
-                    </InputGroup>
+                    <Form.Control
+                      required
+                      disabled
+                      placeholder={phValue ? phValue : value}
+                      value={value}
+                      type="text"
+                    />
                   </Col>
                 </Form.Group>
-              </Row>
+              </Form>
+            ) : (
+              ""
+            )}
+            <hr />
+          </Modal.Footer>
+          <Modal.Footer>
+            {isAlter ? (
+              <div>
+                <Button variant="primary" type="submit">
+                  Update
+                </Button>
 
-              <Form.Group
-                as={Row}
-                className="mb-3"
-                controlId="formPlaintextEmail"
-              >
-                <Form.Label column sm="4">
-                  Value
-                </Form.Label>
-                <Col sm="8">
-                  <Form.Control
-                    disabled
-                    placeholder={phValue ? phValue : value}
-                    value={value}
-                    type="text"
-                  />
-                </Col>
-              </Form.Group>
-            </Form>
-          ) : (
-            ""
-          )}
-          <hr />
-        </Modal.Footer>
-        <Modal.Footer>
-          {isAlter ? (
-            <div>
-              <Button variant="primary" type="submit" onClick={handleSubmit}>
-                Update
+                <Button variant="danger" onClick={handleDelete}>
+                  Delete
+                </Button>
+              </div>
+            ) : (
+              <Button variant="success" type="submit">
+                Submit
               </Button>
-
-              <Button variant="danger" type="submit" onClick={handleDelete}>
-                Delete
-              </Button>
-            </div>
-          ) : (
-            <Button variant="success" type="submit" onClick={handleSubmit}>
-              Submit
+            )}
+            <Button variant="info" onClick={handleClose}>
+              Cancel
             </Button>
-          )}
-          <Button variant="info" onClick={handleClose}>
-            Cancel
-          </Button>
-        </Modal.Footer>
+          </Modal.Footer>
+        </Form>
       </Modal>
       {/* ********************New UQC Creation Modal ************************* */}
       <Modal
@@ -626,7 +767,7 @@ function CreateModal() {
         </Modal.Header>
 
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form noValidate validated={alterValidated} onSubmit={handleSubmit}>
             <Form.Group
               as={Row}
               className="mb-3"
@@ -637,6 +778,7 @@ function CreateModal() {
               </Form.Label>
               <Col sm="8">
                 <Form.Control
+                  required
                   type="text"
                   plaintext
                   placeholder="Type Group Name"
@@ -714,6 +856,7 @@ function CreateModal() {
                 </td>
                 <td>
                   <FormControl
+                    required
                     placeholder={phBatch ? phBatch : batch}
                     value={batch}
                     onChange={(e) => {
@@ -724,6 +867,7 @@ function CreateModal() {
                 {alterDate ? (
                   <td>
                     <FormControl
+                      required
                       type="text"
                       placeHolder={phMfgDt}
                       onChange={() => {
@@ -734,6 +878,7 @@ function CreateModal() {
                 ) : (
                   <td>
                     <FormControl
+                      required
                       value={mfgDt}
                       onChange={(e) => {
                         setMfgDt(e.target.value);
@@ -746,6 +891,7 @@ function CreateModal() {
                 {alterDate ? (
                   <td>
                     <FormControl
+                      required
                       placeHolder={phExpDt}
                       type="text"
                       onChange={() => {
@@ -756,6 +902,7 @@ function CreateModal() {
                 ) : (
                   <td>
                     <FormControl
+                      required
                       type="date"
                       placeHolder={phExpDt}
                       name="DOB"
@@ -768,6 +915,7 @@ function CreateModal() {
                 <td>
                   <InputGroup className="mb-3">
                     <FormControl
+                      required
                       type="decimal"
                       aria-describedby="basic-addon2"
                       placeholder={rate ? rate : phRate}
@@ -782,15 +930,13 @@ function CreateModal() {
                 </td>
                 <td>
                   <FormControl
+                    required
                     placeHolder={quantity ? quantity : phQty}
                     type="number"
                   />
                 </td>
                 <td>
-                  <FormControl
-                    disabled
-                    placeHolder={value ? value : phValue}
-                  />
+                  <FormControl disabled placeHolder={value ? value : phValue} />
                 </td>
               </tr>
 
@@ -806,7 +952,9 @@ function CreateModal() {
 
         {isAlter ? (
           <Modal.Footer>
-            <Button variant="primary">Update</Button>
+            <Button variant="primary" onClick={handleUpdateItem}>
+              Update
+            </Button>
             <Button variant="danger" onClick={handleDelete}>
               Delete
             </Button>

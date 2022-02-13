@@ -10,7 +10,7 @@ import { AuthContext, FirebaseContext } from "./store/Context";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import ArrivedMaterialsPage from "./Pages/inventory/ArrivedMaterialsPage";
 import StockRegisterPage from "./Pages/inventory/StockRegisterPage";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import ProcessingPage from "./Pages/inventory/ProcessingPage";
 import CreateStockPage from "./Pages/inventory/CreateStockPage";
 import TypeAhead from "./Components/TypeAhead";
@@ -34,7 +34,7 @@ function App() {
 
         const docSnap = await getDoc(userRef);
         if (docSnap.exists()) {
-          setUserDetails(docSnap.data())
+          setUserDetails(docSnap.data());
           console.log("Document data:", docSnap.data());
         } else {
           // doc.data() will be undefined in this case
@@ -42,15 +42,19 @@ function App() {
         }
       }
     });
-  }, [auth,setUserDtls]);
+  }, [auth, setUserDtls]);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={userDtls ? <DashBoardPage />:<SignIn/>} />{" "}
+          <Route
+            exact
+            path="/"
+            element={userDtls ? <DashBoardPage /> : <SignIn />}
+          />{" "}
           {/* start work 24-01-2020,,finish Designing */}
-          <Route exact path="/inventory" element={<InventoryPage/> } />{" "}
+          <Route exact path="/inventory" element={<InventoryPage />} />{" "}
           {/* start work 25-01-2020 12:44 AM, */}
           <Route path="/signin" element={<SignIn />} />
           <Route path="/processing" element={<ProcessingPage />} />

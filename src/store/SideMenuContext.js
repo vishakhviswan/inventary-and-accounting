@@ -23,19 +23,26 @@ export const SideContext = ({ children }) => {
   const [placeHolder2, setPlaceHolder2] = useState("");
   const [underSelection, setUnderSelection] = useState("");
   const [phUnit, setPhUnit] = useState("");
-  const [phQty, setPhQty] = useState('')
+  const [phQty, setPhQty] = useState("");
   const [phRate, setPhRate] = useState("");
   const [phValue, setPhValue] = useState("");
-  const [phLot, setPhLot] = useState("")
+  const [phLot, setPhLot] = useState("");
   const [showBatchModal, setShowBatchModal] = useState(false);
-  const [phMfgDt, setPhMfgDt] = useState("")
-  const [phExpDt, setphExpDt] = useState("")
-  const [phGodown, setPhGodown] = useState("")
-  const [phBatch, setPhBatch] = useState("")
+  const [phMfgDt, setPhMfgDt] = useState("");
+  const [phExpDt, setphExpDt] = useState("");
+  const [phGodown, setPhGodown] = useState("");
+  const [phBatch, setPhBatch] = useState("");
   return (
     <SideBarContext.Provider
       value={{
-        phMfgDt, setPhMfgDt,phExpDt, setphExpDt,phGodown, setPhGodown,phBatch, setPhBatch,
+        phMfgDt,
+        setPhMfgDt,
+        phExpDt,
+        setphExpDt,
+        phGodown,
+        setPhGodown,
+        phBatch,
+        setPhBatch,
         phUnit,
         setPhUnit,
         phQty,
@@ -95,14 +102,14 @@ export const SideContext = ({ children }) => {
 
 export const StockAlterContext = createContext("");
 
-export const AlterContext = ({ children}) => {
+export const AlterContext = ({ children }) => {
   const [showAlter, setShowAlter] = useState(false);
   const [alterGroup, setAlterGroup] = useState(false);
   const [alterCategory, setAlterCategory] = useState(false);
   const [alterItem, setAlterItem] = useState(false);
   const [alterUnit, setAlterUnit] = useState(false);
   const [alterGodown, setAlterGodown] = useState(false);
-  const [docId, setDocId] = useState("")
+  const [docId, setDocId] = useState("");
   const [showDltModal, setShowDltModal] = useState(false);
   const [presentCollection, setPresentCollection] = useState("");
   const [dltTitle, setDltTitle] = useState("");
