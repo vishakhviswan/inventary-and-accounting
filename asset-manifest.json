@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/inventary-and-accounting/static/css/main.624371cf.chunk.css",
+    "main.js": "/inventary-and-accounting/static/js/main.0566b8b0.chunk.js",
+    "main.js.map": "/inventary-and-accounting/static/js/main.0566b8b0.chunk.js.map",
+    "runtime-main.js": "/inventary-and-accounting/static/js/runtime-main.809a16af.js",
+    "runtime-main.js.map": "/inventary-and-accounting/static/js/runtime-main.809a16af.js.map",
+    "static/css/2.68a81a89.chunk.css": "/inventary-and-accounting/static/css/2.68a81a89.chunk.css",
+    "static/js/2.9c44a76b.chunk.js": "/inventary-and-accounting/static/js/2.9c44a76b.chunk.js",
+    "static/js/2.9c44a76b.chunk.js.map": "/inventary-and-accounting/static/js/2.9c44a76b.chunk.js.map",
+    "index.html": "/inventary-and-accounting/index.html",
+    "precache-manifest.b8a365944913ea4e892b8e25eb54bb17.js": "/inventary-and-accounting/precache-manifest.b8a365944913ea4e892b8e25eb54bb17.js",
+    "service-worker.js": "/inventary-and-accounting/service-worker.js",
+    "static/css/2.68a81a89.chunk.css.map": "/inventary-and-accounting/static/css/2.68a81a89.chunk.css.map",
+    "static/css/main.624371cf.chunk.css.map": "/inventary-and-accounting/static/css/main.624371cf.chunk.css.map",
+    "static/js/2.9c44a76b.chunk.js.LICENSE.txt": "/inventary-and-accounting/static/js/2.9c44a76b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.809a16af.js",
+    "static/css/2.68a81a89.chunk.css",
+    "static/js/2.9c44a76b.chunk.js",
+    "static/css/main.624371cf.chunk.css",
+    "static/js/main.0566b8b0.chunk.js"
+  ]
+}
