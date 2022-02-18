@@ -115,10 +115,29 @@ export const AlterContext = ({ children }) => {
   const [dltTitle, setDltTitle] = useState("");
   const [dltBody, setDltBody] = useState("");
   const [alterDate, setAlterDate] = useState(false);
+
+  const [listGroup, setListGroup] = useState(false);
+  const [listCategory, setListCategory] = useState(false);
+  const [listItem, setListItem] = useState(false);
+  const [listUnit, setListUnit] = useState(false);
+  const [listGodown, setListGodown] = useState(false);
+  const [listShow, setListShow] = useState(false);
   return (
     <StockAlterContext.Provider
       value={{
+        listGroup,
+        setListGroup,
+        listCategory,
+        setListCategory,
+        listItem,
+        setListItem,
+        listGodown,
+        setListGodown,
+        listUnit,
+        setListUnit,
         showAlter,
+        listShow,
+        setListShow,
         docId,
         setDocId,
         setShowAlter,

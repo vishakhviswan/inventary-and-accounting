@@ -25,7 +25,17 @@ function InventoryHomeStock() {
     };
     getStock();
   }, [db]);
-  console.log("stockdata", stockDetails);
+  // find Total from array
+  console.log(stockDetails.reduce((a, v) => (a = a + v.quantity), 0));
+// const movies = data.filter(item => item.media_type === 'movie')),
+//     moviesCount = movies.length;
+  
+
+const countGkWholes = stockDetails.filter(stockDetails => stockDetails.under === "GK WHOLES");
+  //  countTypes.length;
+   console.log("gededgh", countGkWholes.length, countGkWholes);
+   console.log(countGkWholes.reduce((a, v) => (a = a + v.quantity), 0));
+  
   return (
     <div className="inventoryHomeStock_Pd">
       <div className="inventoryHomeStock_Cd">
@@ -59,7 +69,7 @@ function InventoryHomeStock() {
                       <td>
                         {obj.quantity} {obj.unit}
                       </td>
-                      <td>{obj.batch} batch </td>
+                      <td>{obj.lot} Lot </td>
                     </tr>
                   ))}
                 </tbody>

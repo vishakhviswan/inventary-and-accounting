@@ -30,7 +30,8 @@ import { useEffect } from "react";
 function RcnArrival() {
   const { userDtls } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { recived, date, lot, validated, setValidated } = useContext(TopBarContext);
+  const { recived, date, lot, validated, setValidated } =
+    useContext(TopBarContext);
   const [impOrLoc, setImpOrLoc] = useState("");
   const [mark, setMark] = useState("");
   const [arrived, setArrived] = useState("");
@@ -44,8 +45,7 @@ function RcnArrival() {
   const { db } = useContext(FirebaseContext);
   const [show, setShow] = useState(false);
   const [userDetails, setUserDetails] = useState("");
-  const [currentUser, setCurrentUser] = useState("")
-  
+  const [currentUser, setCurrentUser] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,7 +58,7 @@ function RcnArrival() {
     console.log("valid", form.checkValidity());
     if (form.checkValidity() === true) {
       const RcnArrivalRef = collection(db, "RcnArrivels");
-      setDoc(doc(RcnArrivalRef, currentUser.company), {
+      setDoc(doc(RcnArrivalRef), {
         createdBy: userDetails,
         date: date,
         lotNo: lot,
@@ -73,6 +73,25 @@ function RcnArrival() {
         weight: weight,
         remarks: remarks,
       })
+        .then(() => {
+          addDoc(collection(db, "Stock Items"), {
+            itemName: "Raw Cashew Nuts",
+            under: impOrLoc,
+            createdBy: userDetails,
+            date: date,
+            lotNo: lot,
+            recivedGrade: recived,
+            importOrLocal: impOrLoc,
+            rcnMark: mark,
+            arrivedFrom: arrived,
+            invoiceNo: invoice,
+            outurn: outurn,
+            vehicleNo: vehicle,
+            bags: bags,
+            quantity: parseInt(weight),
+            remarks: remarks,
+          });
+        })
         .then(() => {
           addDoc(collection(db, "RcnStock"), {
             createdBy: userDetails,
@@ -108,18 +127,18 @@ function RcnArrival() {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setCurrentUser(docSnap.data())
+        setCurrentUser(docSnap.data());
         console.log("Document data:", docSnap.data());
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
       }
     };
-    
+
     getUser();
   }, [db]);
   console.log("hello", user);
-console.log("heyyyy", currentUser.company);
+  console.log("heyyyy", currentUser.company);
   return (
     <div className="rcnArrival_ParentDiv">
       <div className="rcnArrival_ChildDiv">
@@ -130,7 +149,7 @@ console.log("heyyyy", currentUser.company);
                 <Form.Check
                   required
                   // value={impOrLoc}
-                  value="local"
+                  value="LOCAL RCN"
                   onChange={(e) => {
                     setImpOrLoc(e.target.value);
                   }}
@@ -145,7 +164,7 @@ console.log("heyyyy", currentUser.company);
                   onChange={(e) => {
                     setImpOrLoc(e.target.value);
                   }}
-                  value="imported"
+                  value="IMPORTED RCN"
                   name="group1"
                   type="radio"
                   id="radioBtn"

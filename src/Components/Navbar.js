@@ -24,7 +24,7 @@ function NavbarHeader() {
           <Container>
             <Navbar.Brand href="/">
               Prakash Exports
-              {userDetails ? `, ${userDetails.company}` : ""}
+              {userDetails.company ? `, ${userDetails.company}` : ""}
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">

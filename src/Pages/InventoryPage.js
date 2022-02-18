@@ -14,26 +14,26 @@ import { AlterContext, SideContext } from "../store/SideMenuContext";
 function InventoryPage() {
   return (
     <div>
-      <AlterContext>
-        <SideContext>
-          <NavbarHeader />
-          <Container>
-            <Row>
-              <Col>
-                <InventoryHomeStock />
-              </Col>
-              <Col>
-                <InventoryHomeMenu />
-              </Col>
-            </Row>
-          </Container>
-          <InventorySideBar />
-          <InventoryModal />
-          <CreateModal />
-          <AlterModal />
-          <ConfirmDltModal/>
-        </SideContext>
-      </AlterContext>
+      {/* <AlterContext> */}
+      <SideContext>
+        <NavbarHeader />
+        <Container>
+          <Row>
+            <Col>
+              <InventoryHomeStock />
+            </Col>
+            <Col>
+              <InventoryHomeMenu />
+            </Col>
+          </Row>
+        </Container>
+        <InventorySideBar />
+        <InventoryModal />
+        <CreateModal />
+        <AlterModal />
+        <ConfirmDltModal />
+      </SideContext>
+      {/* </AlterContext> */}
     </div>
   );
 }

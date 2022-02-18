@@ -20,6 +20,8 @@ import {
   setDoc,
   updateDoc,
   serverTimestamp,
+  query,
+  where,
 } from "firebase/firestore";
 import "./Components.css";
 
@@ -121,13 +123,13 @@ function CreateModal() {
 
   // const [groupDetails, setGroupDetails] = useState([]);
   const [categoryDetails, setCategoryDetails] = useState([]);
+  const [groupDetails, setGroupDetails] = useState([]);
   const [godownDetails, setGodownDetails] = useState([]);
   const [uqcDetails, setUqcDetails] = useState([]);
   const [unitDetails, setUnitDetails] = useState([]);
   // **************** Get From Firebase ***************************
   const { userDetails } = useContext(AuthContext);
   const [alterValidated, setAlterValidated] = useState(false);
-
   // useEffect(() => {
   //   const updateDate = () => {
   //     if (isAlter === true) {
@@ -165,6 +167,15 @@ function CreateModal() {
       );
     };
 
+    const getGroup = async () => {
+      const categoryData = await getDocs(collection(db, "StockGroup"));
+      setGroupDetails(
+        categoryData.docs.map((doc) => ({
+          ...doc.data(),
+        }))
+      );
+    };
+
     const getGodown = async () => {
       const GodownData = await getDocs(collection(db, "Godown"));
       setGodownDetails(
@@ -176,6 +187,7 @@ function CreateModal() {
     getUqc();
     getUnits();
     getCategory();
+    getGroup();
     getGodown();
   }, [db]);
 
@@ -198,7 +210,7 @@ function CreateModal() {
           under: under,
         }).then(() => {
           handleClose();
-          alert("Group submitted sucsessfull");
+          // alert("Group submitted sucsessfull");
         });
       } else if (createCategory === true) {
         const StockCollectionRef = collection(db, "StockCategory");
@@ -336,14 +348,14 @@ function CreateModal() {
       itemName: gName,
       under: under,
       unit: unit,
-      quantity,
+      quantity: parseInt(quantity),
       rate,
       value,
       godown,
       batch,
       mfgDt,
       expDt,
-      lot,
+      lot: parseInt(lot),
     })
       .catch((e) => {
         console.log(e);
@@ -358,21 +370,35 @@ function CreateModal() {
   const handleSubmitItem = async () => {
     const StockItemRef = await collection(db, "Stock Items");
 
-    setDoc(doc(StockItemRef), {
-      arrivedFrom: "Opening Balance",
-      factory: userDetails.company,
-      itemName: gName,
-      under: under,
-      unit: unit,
-      quantity,
-      rate,
-      value,
-      godown,
-      batch,
-      mfgDt,
-      expDt,
-      lot,
-    })
+    // const q = await query(
+    //   collection(db, "StockGroup"),
+    //   where("groupName", "==", under)
+    // );
+    // const querySnapshot = await getDocs(q);
+    // querySnapshot.forEach((doc) => {
+    //   setCategoryP(doc.data().under);
+    //   // doc.data() is never undefined for query doc snapshots
+    //   console.log("abcd",doc.id, " => ", doc.data());
+    // });
+
+    setDoc(
+      doc(StockItemRef),
+      await {
+        arrivedFrom: "Opening Balance",
+        factory: userDetails.company,
+        itemName: gName,
+        under: under,
+        unit: unit,
+        quantity: parseInt(quantity),
+        rate,
+        value,
+        godown,
+        batch,
+        mfgDt,
+        expDt,
+        lot,
+      }
+    )
       .catch((e) => {
         console.log(e);
         alert("Error :", e);
@@ -496,7 +522,7 @@ function CreateModal() {
                     placeholder={placeHolder}
                     value={gName2}
                     onChange={(e) => {
-                      setGName2(e.target.value);
+                      setGName2(e.target.value.toUpperCase());
                     }}
                   />
                 </Col>
@@ -530,6 +556,9 @@ function CreateModal() {
                       ))}
                     </Form.Select>
                   ) : (
+                    ""
+                  )}
+                  {createItem === true ? (
                     <Form.Select
                       required
                       placeholder="Abvuig"
@@ -540,7 +569,27 @@ function CreateModal() {
                       }}
                     >
                       <option
-                        disabled={underSelection ? "true" : "false"}
+                        value={underSelection ? underSelection : "Primary"}
+                      >
+                        {underSelection ? underSelection : "Primary"}
+                      </option>
+
+                      {groupDetails.map((obj) => (
+                        <option value={obj.groupName}>{obj.groupName}</option>
+                      ))}
+                      <option value="none"> None</option>
+                    </Form.Select>
+                  ) : (
+                    <Form.Select
+                      required
+                      placeholder="Abvuig"
+                      aria-label="Default select example"
+                      value={under}
+                      onChange={(e) => {
+                        setUnder(e.target.value);
+                      }}
+                    >
+                      <option
                         value={underSelection ? underSelection : "Primary"}
                       >
                         {underSelection ? underSelection : "Primary"}

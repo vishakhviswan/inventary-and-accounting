@@ -12,11 +12,13 @@ import ArrivedMaterialsPage from "./Pages/inventory/ArrivedMaterialsPage";
 import StockRegisterPage from "./Pages/inventory/StockRegisterPage";
 import { useNavigate } from "react-router-dom";
 import ProcessingPage from "./Pages/inventory/ProcessingPage";
-import CreateStockPage from "./Pages/inventory/CreateStockPage";
 import TypeAhead from "./Components/TypeAhead";
 import InventoryPage from "./Pages/InventoryPage";
 import { useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
+
+import { AlterContext } from "./store/SideMenuContext";
+import ChartofAccountsPage from "./Pages/ChartofAccountsPage";
 
 function App() {
   //const navigate = useNavigate();
@@ -46,26 +48,31 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={userDtls ? <DashBoardPage /> : <SignIn />}
-          />{" "}
-          {/* start work 24-01-2020,,finish Designing */}
-          <Route exact path="/inventory" element={<InventoryPage />} />{" "}
-          {/* start work 25-01-2020 12:44 AM, */}
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/processing" element={<ProcessingPage />} />
-          <Route path="/stockcreate" element={<CreateStockPage />} />
-          <Route path="/addusers" element={<AddUsersPage />} />
-          <Route path="/userslist" element={<ListOfUsersPage />} />
-          <Route path="/arrivedmaterials" element={<ArrivedMaterialsPage />} />
-          <Route path="/stockreg" element={<StockRegisterPage />} />
-          <Route path="/test" element={<TypeAhead />} />
-        </Routes>
-      </BrowserRouter>
+      <AlterContext>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={userDtls ? <DashBoardPage /> : <SignIn />}
+            />{" "}
+            {/* start work 24-01-2022,,finish Designing */}
+            <Route path="/inventory" element={<InventoryPage />} />{" "}
+            {/* start work 25-01-2022 12:44 AM, */}
+            <Route path="/inventorychart" element={<ChartofAccountsPage />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/processing" element={<ProcessingPage />} />
+            <Route path="/addusers" element={<AddUsersPage />} />
+            <Route path="/userslist" element={<ListOfUsersPage />} />
+            <Route
+              path="/arrivedmaterials"
+              element={<ArrivedMaterialsPage />}
+            />
+            <Route path="/stockreg" element={<StockRegisterPage />} />
+            <Route path="/test" element={<TypeAhead />} />
+          </Routes>
+        </BrowserRouter>
+      </AlterContext>
     </div>
   );
 }

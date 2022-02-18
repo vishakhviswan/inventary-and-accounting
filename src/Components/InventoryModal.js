@@ -1,11 +1,12 @@
 // ********New**********
 import React, { useContext, useState } from "react";
 import { Modal, Button, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { SideBarContext, StockAlterContext } from "../store/SideMenuContext";
 
 function InventoryModal() {
   const [id, setId] = useState("");
-
+  const navigate = useNavigate();
   const {
     setLabelThree,
     setCreateGroup,
@@ -36,16 +37,23 @@ function InventoryModal() {
 
   const {
     setShowAlter,
-
     setAlterGroup,
-
     setAlterCategory,
-
     setAlterItem,
-
     setAlterUnit,
-
     setAlterGodown,
+    listGroup,
+    setListGroup,
+    listCategory,
+    setListCategory,
+    listItem,
+    setListItem,
+    listGodown,
+    setListGodown,
+    listUnit,
+    setListUnit,
+    listShow,
+    setListShow,
   } = useContext(StockAlterContext);
 
   const handleClose = () => {
@@ -102,7 +110,7 @@ function InventoryModal() {
     }
   };
 
-  // ***********************Alter Section Old**********************
+  // ***********************Alter Section**********************
   const handleAlter = (e) => {
     if (e.target.id === "alter") {
       if (e.target.title === "Stock Group") {
@@ -120,6 +128,63 @@ function InventoryModal() {
       } else if (e.target.title === "Godown") {
         setShowAlter(true);
         setAlterGodown(true);
+      }
+    } else {
+      console.log("Its Not Alter Selection");
+    }
+  };
+
+  // ***********************List Section**********************
+  const callList = () => {
+    navigate("/inventorychart");
+  };
+  const handleList = (e) => {
+    if (e.target.id === "list") {
+      if (e.target.title === "Stock Group") {
+        setListCategory(false);
+        setListItem(false);
+        setListUnit(false);
+        setListGodown(false);
+
+        setListShow(true);
+        setListGroup(true);
+        callList();
+      } else if (e.target.title === "Stock Category") {
+        setListItem(false);
+        setListUnit(false);
+        setListGodown(false);
+        setListGroup(false);
+
+        setListShow(true);
+        setListCategory(true);
+        callList();
+      } else if (e.target.title === "Stock Item") {
+        setListCategory(false);
+        setListUnit(false);
+        setListGodown(false);
+        setListGroup(false);
+
+        setListShow(true);
+        setListItem(true);
+        callList();
+      } else if (e.target.title === "Unit") {
+        setListCategory(false);
+        setListItem(false);
+        setListGodown(false);
+        setListGroup(false);
+
+        setListShow(true);
+        setListUnit(true);
+        callList();
+      } else if (e.target.title === "Godown") {
+        setListCategory(false);
+        setListItem(false);
+        setListUnit(false);
+        setListGroup(false);
+
+        setListShow(true);
+        setListGodown(true);
+        callList();
       }
     } else {
       console.log("Its Not Alter Selection");
@@ -277,13 +342,64 @@ function InventoryModal() {
         ) : (
           ""
         )}
+        {/* *************************List Modal********************* * */}
         {list === true ? (
           <Modal.Body>
-            <Card.Text className="text-items">Stock Group</Card.Text>
-            <Card.Text className="text-items">Stock Category</Card.Text>
-            <Card.Text className="text-items">Stock Item</Card.Text>
-            <Card.Text className="text-items">Unit</Card.Text>
-            <Card.Text className="text-items">Godown</Card.Text>
+            <Card.Text
+              className="text-items"
+              id="list"
+              title="Stock Group"
+              onClick={(e) => {
+                handleList(e);
+                // handleClose();
+              }}
+            >
+              Stock Group
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="list"
+              title="Stock Category"
+              onClick={(e) => {
+                handleList(e);
+                // handleClose();
+              }}
+            >
+              Stock Category
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="list"
+              title="Stock Item"
+              onClick={(e) => {
+                handleList(e);
+                // handleClose();
+              }}
+            >
+              Stock Item
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="list"
+              title="Unit"
+              onClick={(e) => {
+                handleList(e);
+                // handleClose();
+              }}
+            >
+              Unit
+            </Card.Text>
+            <Card.Text
+              className="text-items"
+              id="list"
+              title="Godown"
+              onClick={(e) => {
+                handleList(e);
+                // handleClose();
+              }}
+            >
+              Godown
+            </Card.Text>
           </Modal.Body>
         ) : (
           ""
